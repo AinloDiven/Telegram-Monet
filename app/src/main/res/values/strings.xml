@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--App Names -->
-    <string name="app_name" translatable="false">TgMonet Theme</string>
-    <string name="app_name_short" translatable="false">TG Monet</string>
+    <string name="app_name" translatable="false">Telegram Monet Radical</string>
+    <string name="app_name_short" translatable="false">TGMonet Radical</string>
     <string name="toolbar_title">Theme</string>
 
     <!--About Card -->
-    <string name="about_card_description">Simple Monet theme generator for Telegram.</string>
-    <string name="about_card_title" translatable="false">TgMonet Theme</string>
+    <string name="about_card_description">Material 3 Expressive Monet theme generator for Telegram with frosted glass.</string>
+    <string name="about_card_title" translatable="false">Telegram Monet Radical</string>
     <string name="about_card_telegram">Our Telegram channel</string>
 
     <!--Dark Theme Card -->
     <string name="dark_theme">Dark</string>
     <string name="settings_card_switch_amoled">Amoled mode</string>
-    <string name="dark_theme_description">Create a dark theme from system colors. Great for the nighttime.</string>
+    <string name="dark_theme_description">Create an expressive dark theme with frosted glass from system colors.</string>
 
     <!--Light Theme Card -->
     <string name="light_theme">Light</string>
-    <string name="light_theme_description">Create a light theme from system colors. Great for the daytime.</string>
+    <string name="light_theme_description">Create an expressive light theme with frosted glass from system colors.</string>
 
     <!--Other -->
+    <string name="apply_theme">Apply</string>
+    <string name="save_theme">Save</string>
     <string name="setup_telegram" translatable="false">Telegram</string>
-    <string name="setup_telegram_x" translatable="false">Telegram X</string>
     <string name="about_card_github" translatable="false">GitHub</string>
     <string name="long_press_to_save_hint">Long press — save to %1$s</string>
     <string name="save_to_downloads_success">Saved: %1$s</string>
@@ -60,11 +61,11 @@
 
     <!--Scheme Selector -->
     <string name="scheme_selector_title">Color scheme</string>
+    <string name="scheme_name_expressive">Expressive</string>
     <string name="scheme_name_tonal_spot">Tonal spot</string>
     <string name="scheme_name_fidelity">Fidelity</string>
     <string name="scheme_name_videlity">Vibrant</string>
     <string name="scheme_name_neutral">Neutral</string>
-    <string name="scheme_name_expressive">Expressive</string>
     <string name="scheme_name_fruit_salad">Fruit salad</string>
     <string name="scheme_name_rainbow">Rainbow</string>
     <string name="scheme_name_content">Content</string>

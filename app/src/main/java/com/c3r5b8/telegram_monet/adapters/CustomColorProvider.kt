@@ -38,7 +38,7 @@ fun schemeFor(
 
 fun generateMonetColors(
     seedArgb: Int,
-    colorScheme: ColorScheme = ColorScheme.TONAL_SPOT,
+    colorScheme: ColorScheme = ColorScheme.EXPRESSIVE,
 ): Map<String, Int> {
     val scheme = schemeFor(seedArgb, colorScheme)
     val palettes = mapOf(

@@ -37,7 +37,7 @@ private const val HCT_TONE_600 = 40
 
 fun paletteExampleTriple(
     argb: Int,
-    colorScheme: ColorScheme = ColorScheme.TONAL_SPOT,
+    colorScheme: ColorScheme = ColorScheme.EXPRESSIVE,
 ): Triple<Color, Color, Color> {
     val scheme = schemeFor(argb, colorScheme)
     return Triple(
@@ -49,7 +49,7 @@ fun paletteExampleTriple(
 
 fun getTonalPalettes(
     argb: Int,
-    colorScheme: ColorScheme = ColorScheme.TONAL_SPOT,
+    colorScheme: ColorScheme = ColorScheme.EXPRESSIVE,
 ): List<Pair<String, TonalPalette>> {
     val scheme = schemeFor(argb, colorScheme)
     return listOf(

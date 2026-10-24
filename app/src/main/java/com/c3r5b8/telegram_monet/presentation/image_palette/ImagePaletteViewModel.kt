@@ -43,7 +43,7 @@ class ImagePaletteViewModel(
     private val _manualColor = MutableStateFlow<Int?>(null)
     val manualColor: StateFlow<Int?> = _manualColor.asStateFlow()
 
-    private val _selectedScheme = MutableStateFlow(ColorScheme.TONAL_SPOT)
+    private val _selectedScheme = MutableStateFlow(ColorScheme.EXPRESSIVE)
     val selectedScheme: StateFlow<ColorScheme> = _selectedScheme.asStateFlow()
 
     // Non-null when edit mode is ready (palette loaded)

@@ -72,24 +72,23 @@ class MainScreenViewModel(
 		}
 	}
 
-	fun onShareTheme(context: Context, isTelegram: Boolean, isLight: Boolean) {
-		val inputFileName = resolveInputFileName(isTelegram, isLight)
-		val outputFileName = resolveOutputFileName(isTelegram, isLight)
+	fun onShareTheme(context: Context, isLight: Boolean) {
+		val inputFileName = resolveInputFileName(isLight)
+		val outputFileName = resolveOutputFileName(isLight)
 
 		val palette = allPalettes.value.find { it.id == _selectedPaletteId.value }
 		val customSeedColor = palette?.argbColor ?: 0
-		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.TONAL_SPOT
+		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
 			createTheme(
 				context = context,
-				isTelegram = isTelegram,
-				isAmoled = isAmoled.value,
-				isGradient = isGradient.value,
-				isAvatarGradient = isAvatarGradient.value,
-				isNicknameColorful = isNicknameColorful.value,
-				isAlterOutColor = isAlterOutColor.value,
-				isUseDivider = isUseDivider.value,
+				isAmoled = _isAmoled.value,
+				isGradient = _isGradient.value,
+				isAvatarGradient = _isAvatarGradient.value,
+				isNicknameColorful = _isNicknameColorful.value,
+				isAlterOutColor = _isAlterOutColor.value,
+				isUseDivider = _isUseDivider.value,
 				inputFileName = inputFileName,
 				outputFileName = outputFileName,
 				customSeedColor = customSeedColor,
@@ -98,24 +97,23 @@ class MainScreenViewModel(
 		}
 	}
 
-	fun onSaveTheme(context: Context, isTelegram: Boolean, isLight: Boolean) {
-		val inputFileName = resolveInputFileName(isTelegram, isLight)
-		val outputFileName = resolveOutputFileName(isTelegram, isLight)
+	fun onSaveTheme(context: Context, isLight: Boolean) {
+		val inputFileName = resolveInputFileName(isLight)
+		val outputFileName = resolveOutputFileName(isLight)
 
 		val palette = allPalettes.value.find { it.id == _selectedPaletteId.value }
 		val customSeedColor = palette?.argbColor ?: 0
-		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.TONAL_SPOT
+		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
 			val content = buildThemeContent(
 				context = context,
-				isTelegram = isTelegram,
-				isAmoled = isAmoled.value,
-				isGradient = isGradient.value,
-				isAvatarGradient = isAvatarGradient.value,
-				isNicknameColorful = isNicknameColorful.value,
-				isAlterOutColor = isAlterOutColor.value,
-				isUseDivider = isUseDivider.value,
+				isAmoled = _isAmoled.value,
+				isGradient = _isGradient.value,
+				isAvatarGradient = _isAvatarGradient.value,
+				isNicknameColorful = _isNicknameColorful.value,
+				isAlterOutColor = _isAlterOutColor.value,
+				isUseDivider = _isUseDivider.value,
 				inputFileName = inputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
@@ -124,20 +122,13 @@ class MainScreenViewModel(
 		}
 	}
 
-	private fun resolveInputFileName(isTelegram: Boolean, isLight: Boolean): String = when {
-		isTelegram && isLight -> Constants.INPUT_FILE_TELEGRAM_LIGHT
-		isTelegram -> Constants.INPUT_FILE_TELEGRAM_DARK
-		!isTelegram && isLight -> Constants.INPUT_FILE_TELEGRAM_X_LIGHT
-		else -> Constants.INPUT_FILE_TELEGRAM_X_DARK
-	}
+	private fun resolveInputFileName(isLight: Boolean): String =
+		if (isLight) Constants.INPUT_FILE_TELEGRAM_LIGHT else Constants.INPUT_FILE_TELEGRAM_DARK
 
-	private fun resolveOutputFileName(isTelegram: Boolean, isLight: Boolean): String = when {
-		isTelegram && isLight -> Constants.OUTPUT_FILE_TELEGRAM_LIGHT
-		isTelegram && !isAmoled.value -> Constants.OUTPUT_FILE_TELEGRAM_DARK
-		isTelegram -> Constants.OUTPUT_FILE_TELEGRAM_AMOLED
-		!isTelegram && isLight -> Constants.OUTPUT_FILE_TELEGRAM_X_LIGHT
-		!isTelegram && !isAmoled.value -> Constants.OUTPUT_FILE_TELEGRAM_X_DARK
-		else -> Constants.OUTPUT_FILE_TELEGRAM_X_AMOLED
+	private fun resolveOutputFileName(isLight: Boolean): String = when {
+		isLight -> Constants.OUTPUT_FILE_TELEGRAM_LIGHT
+		!_isAmoled.value -> Constants.OUTPUT_FILE_TELEGRAM_DARK
+		else -> Constants.OUTPUT_FILE_TELEGRAM_AMOLED
 	}
 
 	init {
@@ -161,7 +152,7 @@ class MainScreenViewModel(
 		_isGradient.value = sharedPreferences.getBoolean(Constants.SHARED_USE_GRADIENT, false)
 		_isAvatarGradient.value = sharedPreferences.getBoolean(Constants.SHARED_USE_GRADIENT_AVATARS, false)
 		_isNicknameColorful.value = sharedPreferences.getBoolean(Constants.SHARED_USE_COLORFUL_NICKNAME, true)
-		_isAlterOutColor.value = sharedPreferences.getBoolean(Constants.SHARED_USE_OLD_CHAT_STYLE, true)
+		_isAlterOutColor.value = sharedPreferences.getBoolean(Constants.SHARED_USE_OLD_CHAT_STYLE, false)
 		_isUseDivider.value = sharedPreferences.getBoolean(Constants.SHARED_USE_USE_DIVIDER, false)
 	}
 }

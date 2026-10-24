@@ -62,8 +62,8 @@ fun MainScreen(
 		onSelectPalette = { viewModel.selectPalette(it) },
 		onDeletePalette = { viewModel.deletePalette(it) },
 		onEditPalette = onEditPalette,
-		onShareTheme = { isTg, isLight -> viewModel.onShareTheme(context, isTg, isLight) },
-		onSaveTheme = { isTg, isLight -> viewModel.onSaveTheme(context, isTg, isLight) },
+		onApplyTheme = { isLight -> viewModel.onShareTheme(context, isLight) },
+		onSaveTheme = { isLight -> viewModel.onSaveTheme(context, isLight) },
 		onOpenImagePalette = onOpenImagePalette,
 	)
 }
@@ -87,8 +87,8 @@ private fun MainScreenComponent(
 	onSelectPalette: (Int) -> Unit,
 	onDeletePalette: (PaletteEntity) -> Unit,
 	onEditPalette: (Int) -> Unit,
-	onShareTheme: (isTelegram: Boolean, isLight: Boolean) -> Unit,
-	onSaveTheme: (isTelegram: Boolean, isLight: Boolean) -> Unit,
+	onApplyTheme: (isLight: Boolean) -> Unit,
+	onSaveTheme: (isLight: Boolean) -> Unit,
 	onOpenImagePalette: () -> Unit,
 ) {
 	val scrollBehavior =
@@ -119,10 +119,8 @@ private fun MainScreenComponent(
 					title = R.string.light_theme,
 					description = R.string.light_theme_description,
 					icon = R.drawable.theme_icon_light,
-					onTelegramClick = { onShareTheme(true, true) },
-					onTelegramXClick = { onShareTheme(false, true) },
-					onTelegramLongClick = { onSaveTheme(true, true) },
-					onTelegramXLongClick = { onSaveTheme(false, true) },
+					onApplyClick = { onApplyTheme(true) },
+					onSaveClick = { onSaveTheme(true) },
 				)
 			}
 
@@ -131,10 +129,8 @@ private fun MainScreenComponent(
 					title = R.string.dark_theme,
 					description = R.string.dark_theme_description,
 					icon = R.drawable.theme_icon_dark,
-					onTelegramClick = { onShareTheme(true, false) },
-					onTelegramXClick = { onShareTheme(false, false) },
-					onTelegramLongClick = { onSaveTheme(true, false) },
-					onTelegramXLongClick = { onSaveTheme(false, false) },
+					onApplyClick = { onApplyTheme(false) },
+					onSaveClick = { onSaveTheme(false) },
 				)
 			}
 
@@ -194,8 +190,8 @@ private fun MainScreenPreview() {
 		onSelectPalette = {},
 		onDeletePalette = {},
 		onEditPalette = {},
-		onShareTheme = { _, _ -> },
-		onSaveTheme = { _, _ -> },
+		onApplyTheme = { _ -> },
+		onSaveTheme = { _ -> },
 		onOpenImagePalette = {},
 	)
 }

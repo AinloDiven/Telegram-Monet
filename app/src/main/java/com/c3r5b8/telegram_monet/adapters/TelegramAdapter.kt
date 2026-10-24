@@ -1,8 +1,6 @@
 package com.c3r5b8.telegram_monet.adapters
 
 import android.content.Context
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toColorLong
 import androidx.core.content.ContextCompat.getColor
 import com.c3r5b8.telegram_monet.R
 
@@ -13,6 +11,9 @@ fun changeTextTelegram(
 ): String {
     val monetList = mutableMapOf(
         "a1_0" to getColor(applicationContext, R.color.system_accent1_0),
+        "a1_10" to getColor(applicationContext, R.color.system_accent1_10),
+        "a1_50" to getColor(applicationContext, R.color.system_accent1_50),
+        "a1_100" to getColor(applicationContext, R.color.system_accent1_100),
         "a1_200" to getColor(applicationContext, R.color.system_accent1_200),
         "a1_300" to getColor(applicationContext, R.color.system_accent1_300),
         "a1_400" to getColor(applicationContext, R.color.system_accent1_400),
@@ -22,10 +23,11 @@ fun changeTextTelegram(
         "a1_800" to getColor(applicationContext, R.color.system_accent1_800),
         "a1_900" to getColor(applicationContext, R.color.system_accent1_900),
         "a1_1000" to getColor(applicationContext, R.color.system_accent1_1000),
-        "a1_100" to getColor(applicationContext, R.color.system_accent1_100),
-        "a1_10" to getColor(applicationContext, R.color.system_accent1_10),
-        "a1_50" to getColor(applicationContext, R.color.system_accent1_50),
+
         "a2_0" to getColor(applicationContext, R.color.system_accent2_0),
+        "a2_10" to getColor(applicationContext, R.color.system_accent2_10),
+        "a2_50" to getColor(applicationContext, R.color.system_accent2_50),
+        "a2_100" to getColor(applicationContext, R.color.system_accent2_100),
         "a2_200" to getColor(applicationContext, R.color.system_accent2_200),
         "a2_300" to getColor(applicationContext, R.color.system_accent2_300),
         "a2_400" to getColor(applicationContext, R.color.system_accent2_400),
@@ -35,10 +37,11 @@ fun changeTextTelegram(
         "a2_800" to getColor(applicationContext, R.color.system_accent2_800),
         "a2_900" to getColor(applicationContext, R.color.system_accent2_900),
         "a2_1000" to getColor(applicationContext, R.color.system_accent2_1000),
-        "a2_100" to getColor(applicationContext, R.color.system_accent2_100),
-        "a2_10" to getColor(applicationContext, R.color.system_accent2_10),
-        "a2_50" to getColor(applicationContext, R.color.system_accent2_50),
+
         "a3_0" to getColor(applicationContext, R.color.system_accent3_0),
+        "a3_10" to getColor(applicationContext, R.color.system_accent3_10),
+        "a3_50" to getColor(applicationContext, R.color.system_accent3_50),
+        "a3_100" to getColor(applicationContext, R.color.system_accent3_100),
         "a3_200" to getColor(applicationContext, R.color.system_accent3_200),
         "a3_300" to getColor(applicationContext, R.color.system_accent3_300),
         "a3_400" to getColor(applicationContext, R.color.system_accent3_400),
@@ -48,10 +51,11 @@ fun changeTextTelegram(
         "a3_800" to getColor(applicationContext, R.color.system_accent3_800),
         "a3_900" to getColor(applicationContext, R.color.system_accent3_900),
         "a3_1000" to getColor(applicationContext, R.color.system_accent3_1000),
-        "a3_100" to getColor(applicationContext, R.color.system_accent3_100),
-        "a3_10" to getColor(applicationContext, R.color.system_accent3_10),
-        "a3_50" to getColor(applicationContext, R.color.system_accent3_50),
+
         "n1_0" to getColor(applicationContext, R.color.system_neutral1_0),
+        "n1_10" to getColor(applicationContext, R.color.system_neutral1_10),
+        "n1_50" to getColor(applicationContext, R.color.system_neutral1_50),
+        "n1_100" to getColor(applicationContext, R.color.system_neutral1_100),
         "n1_200" to getColor(applicationContext, R.color.system_neutral1_200),
         "n1_300" to getColor(applicationContext, R.color.system_neutral1_300),
         "n1_400" to getColor(applicationContext, R.color.system_neutral1_400),
@@ -61,10 +65,11 @@ fun changeTextTelegram(
         "n1_800" to getColor(applicationContext, R.color.system_neutral1_800),
         "n1_900" to getColor(applicationContext, R.color.system_neutral1_900),
         "n1_1000" to getColor(applicationContext, R.color.system_neutral1_1000),
-        "n1_100" to getColor(applicationContext, R.color.system_neutral1_100),
-        "n1_10" to getColor(applicationContext, R.color.system_neutral1_10),
-        "n1_50" to getColor(applicationContext, R.color.system_neutral1_50),
+
         "n2_0" to getColor(applicationContext, R.color.system_neutral2_0),
+        "n2_10" to getColor(applicationContext, R.color.system_neutral2_10),
+        "n2_50" to getColor(applicationContext, R.color.system_neutral2_50),
+        "n2_100" to getColor(applicationContext, R.color.system_neutral2_100),
         "n2_200" to getColor(applicationContext, R.color.system_neutral2_200),
         "n2_300" to getColor(applicationContext, R.color.system_neutral2_300),
         "n2_400" to getColor(applicationContext, R.color.system_neutral2_400),
@@ -74,23 +79,57 @@ fun changeTextTelegram(
         "n2_800" to getColor(applicationContext, R.color.system_neutral2_800),
         "n2_900" to getColor(applicationContext, R.color.system_neutral2_900),
         "n2_1000" to getColor(applicationContext, R.color.system_neutral2_1000),
-        "n2_100" to getColor(applicationContext, R.color.system_neutral2_100),
-        "n2_10" to getColor(applicationContext, R.color.system_neutral2_10),
-        "n2_50" to getColor(applicationContext, R.color.system_neutral2_50),
+
         "monetRedDark" to getColor(applicationContext, R.color.monetRedDark),
         "monetRedLight" to getColor(applicationContext, R.color.monetRedLight),
         "monetRedCall" to getColor(applicationContext, R.color.colorCallRed),
         "monetGreenCall" to getColor(applicationContext, R.color.colorCallGreen),
     )
     monetList.putAll(customColors)
-    val a2_700_2 = (monetList["a2_700"]!! and 0x00FFFFFF) or (0x80 shl 24)
-    val n2_100_2 = (monetList["n2_100"]!! and 0x00FFFFFF) or (0x80 shl 24)
-    var themeText = file.replace("$", "")
 
-	themeText = themeText.replace(Regex("chat_selectedBackground=a2_700"), "chat_selectedBackground=$a2_700_2")
-	themeText = themeText.replace(Regex("chat_selectedBackground=n2_100"), "chat_selectedBackground=$n2_100_2")
-    monetList.forEach {
-        themeText = themeText.replace(it.key, it.value.toString())
+    // Frosted glass translucent color tokens
+    // 0xD9 = ~85% alpha, 0xCC = ~80% alpha, 0xB3 = ~70% alpha, 0x80 = 50% alpha
+    fun withAlpha(baseKey: String, alphaHex: Int): Int {
+        val base = monetList[baseKey] ?: 0
+        return (base and 0x00FFFFFF) or (alphaHex shl 24)
     }
+
+    monetList["n1_900_glass_85"] = withAlpha("n1_900", 0xD9)
+    monetList["n1_900_glass_80"] = withAlpha("n1_900", 0xCC)
+    monetList["n1_900_glass_70"] = withAlpha("n1_900", 0xB3)
+
+    monetList["n1_1000_glass_85"] = withAlpha("n1_1000", 0xD9)
+    monetList["n1_1000_glass_80"] = withAlpha("n1_1000", 0xCC)
+
+    monetList["n1_800_glass_85"] = withAlpha("n1_800", 0xD9)
+    monetList["n1_800_glass_80"] = withAlpha("n1_800", 0xCC)
+
+    monetList["n1_50_glass_85"] = withAlpha("n1_50", 0xD9)
+    monetList["n1_50_glass_80"] = withAlpha("n1_50", 0xCC)
+    monetList["n1_50_glass_70"] = withAlpha("n1_50", 0xB3)
+
+    monetList["n1_100_glass_85"] = withAlpha("n1_100", 0xD9)
+    monetList["a1_700_glass_85"] = withAlpha("a1_700", 0xD9)
+    monetList["a1_200_glass_85"] = withAlpha("a1_200", 0xD9)
+    monetList["a1_100_glass_85"] = withAlpha("a1_100", 0xD9)
+
+    val a2_700_2 = withAlpha("a2_700", 0x80)
+    val n2_100_2 = withAlpha("n2_100", 0x80)
+
+    var themeText = file.replace("$", "")
+    themeText = themeText.replace(Regex("chat_selectedBackground=a2_700"), "chat_selectedBackground=$a2_700_2")
+    themeText = themeText.replace(Regex("chat_selectedBackground=n2_100"), "chat_selectedBackground=$n2_100_2")
+
+    // Replace keys sorted by length descending so prefixes like n1_10 do not clobber n1_100, n1_1000, etc.
+    val sortedKeys = monetList.keys.sortedByDescending { it.length }
+    for (key in sortedKeys) {
+        val value = monetList[key]!!
+        themeText = themeText.replace(key, value.toString())
+    }
+
+    if (!themeText.contains("WLS=")) {
+        themeText += "\nWLS=tg://wallpaper?mode=blur\n"
+    }
+
     return themeText
 }

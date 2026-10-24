@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Telegram Monet Radical</string>
+    <string name="app_name_short" translatable="false">TGMonet Radical</string>
     <string name="toolbar_title">主题</string>
-    <string name="about_card_description">一个简单的 Telegram Monet 主题生成器</string>
+    <string name="about_card_description">Material 3 Expressive 规范的 Telegram Monet 磨砂透明主题生成器</string>
+    <string name="about_card_title" translatable="false">Telegram Monet Radical</string>
     <string name="about_card_telegram">我们的 Telegram 频道</string>
     <string name="dark_theme">深色</string>
-    <string name="dark_theme_description">深色主题晚上观感更好</string>
+    <string name="dark_theme_description">采用 Material 3 Expressive 与磨砂透明效果的深色主题</string>
     <string name="light_theme">浅色</string>
-    <string name="light_theme_description">浅色主题白天看着更舒适</string>
+    <string name="light_theme_description">采用 Material 3 Expressive 与磨砂透明效果的浅色主题</string>
+    <string name="apply_theme">应用主题</string>
+    <string name="save_theme">保存文件</string>
     <string name="settings_card_title">设置</string>
     <string name="settings_card_use_gradient">启用渐变（Telegram）</string>
     <string name="settings_card_use_gradient_avatars">为头像启用渐变</string>
     <string name="settings_card_monet_nick">为昵称启用 Monet</string>
-    <string name="settings_card_chat_old_style">使用其他发送信息样式</string>
+    <string name="settings_card_chat_old_style">切换消息气泡高低对比度样式</string>
     <string name="settings_card_switch_amoled">纯黑模式</string>
+    <string name="settings_card_use_divider">启用分割线</string>
+    <string name="long_press_to_save_hint">长按“应用”或点击“保存”存至 %1$s</string>
+    <string name="save_to_downloads_success">已保存：%1$s</string>
+    <string name="save_to_downloads_failed">保存失败</string>
+    <string name="palette_card_title">自定义取色板</string>
+    <string name="palette_card_system_label">系统默认</string>
+    <string name="palette_card_delete_title">删除取色板？</string>
+    <string name="palette_card_delete_confirm">删除</string>
+    <string name="palette_card_delete_cancel">取消</string>
+    <string name="palette_card_add_label">新建</string>
+    <string name="image_palette_title">新建取色板</string>
+    <string name="image_palette_edit_title">编辑取色板</string>
+    <string name="image_palette_choose">选取图片</string>
+    <string name="image_palette_change">更换</string>
+    <string name="image_palette_extracted_colors">提取的颜色</string>
+    <string name="image_palette_tonal_palette">色调色板</string>
+    <string name="image_palette_name">名称</string>
+    <string name="image_palette_name_hint">色板名称</string>
+    <string name="image_palette_save">保存色板</string>
+    <string name="image_palette_choose_color">选取颜色</string>
+    <string name="image_palette_manual_apply">应用</string>
+    <string name="scheme_selector_title">配色方案</string>
+    <string name="scheme_name_expressive">Expressive 表现力</string>
+    <string name="scheme_name_tonal_spot">Tonal spot 色调聚焦</string>
+    <string name="scheme_name_fidelity">Fidelity 保真</string>
+    <string name="scheme_name_videlity">Vibrant 鲜艳</string>
+    <string name="scheme_name_neutral">Neutral 中性</string>
+    <string name="scheme_name_fruit_salad">Fruit salad 果盘</string>
+    <string name="scheme_name_rainbow">Rainbow 彩虹</string>
+    <string name="scheme_name_content">Content 内容</string>
+    <string name="scheme_name_monochrome">Monochrome 单色</string>
+    <string name="palette_card_apply">应用</string>
+    <string name="palette_card_edit">编辑</string>
+    <string name="palette_card_rename_title">重命名色板</string>
 </resources>

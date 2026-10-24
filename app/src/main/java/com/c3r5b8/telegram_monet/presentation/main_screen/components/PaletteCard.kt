@@ -104,7 +104,7 @@ fun PaletteCard(
         else
             previewEntity!!.name
         val previewScheme = if (previewIsSystem)
-            ColorScheme.TONAL_SPOT
+            ColorScheme.EXPRESSIVE
         else
             ColorScheme.fromName(previewEntity!!.scheme)
 

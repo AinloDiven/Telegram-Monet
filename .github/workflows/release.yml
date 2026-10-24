@@ -1,13 +1,19 @@
-name: TGMonet Release
+name: TGMonet Radical Release
 
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  build_debug_apk:
-    name: Build TGMonet Release APK
+  build_release_apk:
+    name: Build TGMonet Radical Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -27,22 +33,63 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
-
-      - name: Configure gradle.properties
+      - name: Setup Keystore
         run: |
           mkdir -p ~/.gradle
-          echo "RELEASE_STORE_FILE=release.keystore" >> ~/.gradle/gradle.properties
-          echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> ~/.gradle/gradle.properties
-          echo "RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> ~/.gradle/gradle.properties
-          echo "RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
+            echo "RELEASE_STORE_FILE=release.keystore" >> ~/.gradle/gradle.properties
+            echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> ~/.gradle/gradle.properties
+            echo "RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> ~/.gradle/gradle.properties
+            echo "RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
+          else
+            echo "Generating self-contained release keystore..."
+            keytool -genkeypair -v \
+              -keystore app/release.keystore \
+              -alias tgmonet_radical \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass radicalpass \
+              -keypass radicalpass \
+              -dname "CN=TGMonet Radical, OU=Radical, O=Radical, L=World, ST=World, C=US"
+            echo "RELEASE_STORE_FILE=release.keystore" >> ~/.gradle/gradle.properties
+            echo "RELEASE_STORE_PASSWORD=radicalpass" >> ~/.gradle/gradle.properties
+            echo "RELEASE_KEY_ALIAS=tgmonet_radical" >> ~/.gradle/gradle.properties
+            echo "RELEASE_KEY_PASSWORD=radicalpass" >> ~/.gradle/gradle.properties
+          fi
 
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
 
-      - name: Upload release apk
+      - name: Prepare APK for Release
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk ./TGMonet-Radical-v14.0.0.apk
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: TGMonet-Radical-v14.0.0.apk
+          path: TGMonet-Radical-v14.0.0.apk
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        with:
+          tag_name: v14.0.0-radical
+          name: TGMonet Radical v14.0.0
+          body: |
+            ## TGMonet Radical v14.0.0
+
+            ### 🚀 Updates & Refactoring
+            - **Modern Telegram Engine**: Exclusively optimized for official modern Telegram (10.x / 11.x+).
+            - **Cleaned Architecture**: Completely removed Telegram X legacy dependencies, templates, and UI clutter.
+            - **Frosted Glass Blur**: Translucent frosted glass styling enabled for top folder tabs, bottom navigation bar, message composer bar, and action bar.
+            - **Material 3 Expressive System**: Standardized on high-contrast, harmonious Material 3 Expressive palette generation (eliminates the background cut-to-resume font disappearance bug on Android 15/17).
+            - **Refined Theme Keys**: Cleaned legacy `--` prefix syntax errors and synced with official Telegram `ThemeColors` keys.
+
+            ### 📦 Installation
+            Download and install `TGMonet-Radical-v14.0.0.apk` below.
+          files: TGMonet-Radical-v14.0.0.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

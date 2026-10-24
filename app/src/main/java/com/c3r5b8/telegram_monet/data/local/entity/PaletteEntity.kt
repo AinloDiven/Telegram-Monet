@@ -8,6 +8,6 @@ data class PaletteEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val argbColor: Int,
-    val scheme: String = "TONAL_SPOT",
+    val scheme: String = "EXPRESSIVE",
     val createdAt: Long = System.currentTimeMillis()
 )

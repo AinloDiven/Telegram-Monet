@@ -37,26 +37,19 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "Using fixed release keystore from GitHub Secrets..."
             echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.keystore
             echo "RELEASE_STORE_FILE=release.keystore" >> ~/.gradle/gradle.properties
             echo "RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> ~/.gradle/gradle.properties
             echo "RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> ~/.gradle/gradle.properties
             echo "RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
-          else
-            echo "Generating self-contained release keystore..."
-            keytool -genkeypair -v \
-              -keystore app/release.keystore \
-              -alias tgmonet_radical \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -storepass radicalpass \
-              -keypass radicalpass \
-              -dname "CN=TGMonet Radical, OU=Radical, O=Radical, L=World, ST=World, C=US"
+          elif [ -f "app/tgmonet_radical.keystore" ]; then
+            echo "Using bundled permanent release keystore..."
+            cp app/tgmonet_radical.keystore app/release.keystore
             echo "RELEASE_STORE_FILE=release.keystore" >> ~/.gradle/gradle.properties
-            echo "RELEASE_STORE_PASSWORD=radicalpass" >> ~/.gradle/gradle.properties
+            echo "RELEASE_STORE_PASSWORD=tgmonet_radical_2026" >> ~/.gradle/gradle.properties
             echo "RELEASE_KEY_ALIAS=tgmonet_radical" >> ~/.gradle/gradle.properties
-            echo "RELEASE_KEY_PASSWORD=radicalpass" >> ~/.gradle/gradle.properties
+            echo "RELEASE_KEY_PASSWORD=tgmonet_radical_2026" >> ~/.gradle/gradle.properties
           fi
 
       - name: Build release APK

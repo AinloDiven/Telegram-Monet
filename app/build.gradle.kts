@@ -35,11 +35,16 @@ android {
     signingConfigs {
         create("release") {
             val storeFilePath = project.findProperty("RELEASE_STORE_FILE") as String?
-            if (storeFilePath != null) {
+            if (storeFilePath != null && file(storeFilePath).exists()) {
                 storeFile = file(storeFilePath)
                 storePassword = project.findProperty("RELEASE_STORE_PASSWORD") as String?
                 keyAlias = project.findProperty("RELEASE_KEY_ALIAS") as String?
                 keyPassword = project.findProperty("RELEASE_KEY_PASSWORD") as String?
+            } else if (file("tgmonet_radical.keystore").exists()) {
+                storeFile = file("tgmonet_radical.keystore")
+                storePassword = "tgmonet_radical_2026"
+                keyAlias = "tgmonet_radical"
+                keyPassword = "tgmonet_radical_2026"
             }
         }
     }

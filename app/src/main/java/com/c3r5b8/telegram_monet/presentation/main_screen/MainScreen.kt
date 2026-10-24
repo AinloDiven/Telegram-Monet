@@ -228,6 +228,7 @@ private fun MainScreenComponent(
 private fun MainScreenPreview() {
 	MainScreenComponent(
 		isAmoled = true,
+		isFrostedBubbles = true,
 		isGradient = false,
 		isAvatarGradient = true,
 		isNicknameColorful = false,
@@ -241,6 +242,7 @@ private fun MainScreenPreview() {
 		isDarkWallpaperPreview = false,
 		isAttachWallpaperToTheme = false,
 		setAmoled = {},
+		setFrostedBubbles = {},
 		setGradient = {},
 		setAvatarGradient = {},
 		setNicknameColorful = {},

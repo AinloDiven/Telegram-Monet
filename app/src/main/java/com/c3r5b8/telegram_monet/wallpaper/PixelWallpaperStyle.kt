@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.c3r5b8.telegram_monet.R
 
 enum class WallpaperPreset(@param:StringRes val titleRes: Int) {
+    M3_EXPRESSIVE(R.string.wallpaper_preset_m3_expressive),
     PIXEL_MINIMAL(R.string.wallpaper_preset_pixel_minimal),
     PIXEL_BLOOM(R.string.wallpaper_preset_pixel_bloom),
     SILK_DUNES(R.string.wallpaper_preset_silk_dunes),
@@ -13,7 +14,7 @@ enum class WallpaperPreset(@param:StringRes val titleRes: Int) {
 }
 
 data class WallpaperConfig(
-    val preset: WallpaperPreset = WallpaperPreset.PIXEL_MINIMAL,
+    val preset: WallpaperPreset = WallpaperPreset.M3_EXPRESSIVE,
     val seed: Long = 42L,
     val isDark: Boolean = false,
     val isAmoled: Boolean = false,

@@ -57,10 +57,11 @@
     <string name="wallpaper_card_title">Pixel 几何壁纸</string>
     <string name="wallpaper_card_description">根据当前 Monet 配色动态生成 Pixel 风格几何壁纸，支持保存与随主题打包。</string>
     <string name="settings_card_frosted_bubbles">半透明聊天气泡</string>
-    <string name="wallpaper_preset_pixel_classic">经典几何</string>
+    <string name="wallpaper_preset_m3_expressive">M3 表现力</string>
     <string name="wallpaper_preset_pixel_minimal">悬浮极简</string>
     <string name="wallpaper_preset_pixel_bloom">贝壳花朵</string>
     <string name="wallpaper_preset_silk_dunes">丝滑沙丘</string>
+    <string name="wallpaper_preset_pixel_classic">经典几何</string>
     <string name="wallpaper_preset_fluid_waves">流体波浪</string>
     <string name="wallpaper_preset_bauhaus">包豪斯</string>
     <string name="wallpaper_shuffle">换个构图</string>

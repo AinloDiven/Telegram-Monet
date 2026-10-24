@@ -80,10 +80,11 @@
     <string name="wallpaper_card_title">Pixel Geometry Wallpaper</string>
     <string name="wallpaper_card_description">Generate Material 3 Expressive Pixel-styled geometric wallpapers that match your dynamic colors.</string>
     <string name="settings_card_frosted_bubbles">Translucent Chat Bubbles</string>
-    <string name="wallpaper_preset_pixel_classic">Classic</string>
+    <string name="wallpaper_preset_m3_expressive">M3 Expressive</string>
     <string name="wallpaper_preset_pixel_minimal">Floating Geometry</string>
     <string name="wallpaper_preset_pixel_bloom">Pixel Bloom</string>
     <string name="wallpaper_preset_silk_dunes">Silk Dunes</string>
+    <string name="wallpaper_preset_pixel_classic">Classic</string>
     <string name="wallpaper_preset_fluid_waves">Fluid Waves</string>
     <string name="wallpaper_preset_bauhaus">Bauhaus</string>
     <string name="wallpaper_shuffle">Shuffle</string>

@@ -145,6 +145,7 @@ object PixelWallpaperGenerator {
         val colorVariant = ((abs(config.seed) / 4) % 3).toInt()
 
         when (config.preset) {
+            WallpaperPreset.M3_EXPRESSIVE -> renderM3Expressive(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
             WallpaperPreset.PIXEL_MINIMAL -> renderPixelMinimal(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
             WallpaperPreset.PIXEL_BLOOM -> renderPixelBloom(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
             WallpaperPreset.SILK_DUNES -> renderSilkDunes(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
@@ -202,6 +203,159 @@ object PixelWallpaperGenerator {
     ) {
         val rectF = RectF(cx - rx, cy - ry, cx + rx, cy + ry)
         canvas.drawOval(rectF, paint)
+    }
+
+    private fun drawSeaUrchin(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        baseRadius: Float,
+        spikeAmplitude: Float,
+        spikes: Int = 12,
+        paint: Paint,
+    ) {
+        val path = Path()
+        val stepCount = spikes * 12
+        for (i in 0 until stepCount) {
+            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
+            val wave = cos((spikes * theta).toDouble()).toFloat()
+            val harmonic = 0.25f * cos((2 * spikes * theta).toDouble()).toFloat()
+            val r = baseRadius + spikeAmplitude * (wave + harmonic)
+            val x = cx + r * cos(theta.toDouble()).toFloat()
+            val y = cy + r * sin(theta.toDouble()).toFloat()
+            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        path.close()
+        canvas.drawPath(path, paint)
+    }
+
+    private fun drawClover(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        radius: Float,
+        leaves: Int = 4,
+        paint: Paint,
+    ) {
+        val path = Path()
+        val stepCount = leaves * 16
+        for (i in 0 until stepCount) {
+            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
+            val r = radius * (0.75f + 0.25f * cos((leaves * theta).toDouble()).toFloat())
+            val x = cx + r * cos(theta.toDouble()).toFloat()
+            val y = cy + r * sin(theta.toDouble()).toFloat()
+            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        path.close()
+        canvas.drawPath(path, paint)
+    }
+
+    private fun drawSunny(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        radius: Float,
+        rays: Int = 8,
+        paint: Paint,
+    ) {
+        val path = Path()
+        val stepCount = rays * 12
+        for (i in 0 until stepCount) {
+            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
+            val r = radius * (0.84f + 0.16f * cos((rays * theta).toDouble()).toFloat())
+            val x = cx + r * cos(theta.toDouble()).toFloat()
+            val y = cy + r * sin(theta.toDouble()).toFloat()
+            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        path.close()
+        canvas.drawPath(path, paint)
+    }
+
+    // =========================================================================
+    // 0. M3_EXPRESSIVE (Official Material 3 Expressive Shape Family)
+    // Features Sea Urchin (海胆), 4/8-Leaf Clover (四叶草), Sunny (阳光太阳)
+    // =========================================================================
+    private fun renderM3Expressive(
+        canvas: Canvas,
+        w: Float,
+        h: Float,
+        colors: ResolvedWallpaperColors,
+        paint: Paint,
+        layout: Int,
+        colorVariant: Int,
+    ) {
+        val urchinColor = when (colorVariant) {
+            0 -> colors.vibrant
+            1 -> colors.primary
+            else -> colors.accent
+        }
+        val cloverColor = when (colorVariant) {
+            0 -> colors.tertiary
+            1 -> colors.secondary
+            else -> colors.primary
+        }
+        val sunnyColor = when (colorVariant) {
+            0 -> colors.yellowPop
+            1 -> colors.accent
+            else -> colors.softDune
+        }
+        val pillColor = colors.secondary
+
+        when (layout) {
+            0 -> {
+                // Layout 0: Sea Urchin Hero at top-right, 4-leaf Clover at bottom-left, Sunny accent at mid-left
+                paint.color = urchinColor
+                drawSeaUrchin(canvas, 0.78f * w, 0.22f * h, 0.26f * w, 0.08f * w, 12, paint)
+
+                paint.color = cloverColor
+                drawClover(canvas, 0.30f * w, 0.82f * h, 0.28f * w, 4, paint)
+
+                paint.color = sunnyColor
+                drawSunny(canvas, 0.16f * w, 0.42f * h, 0.18f * w, 8, paint)
+
+                paint.color = pillColor
+                drawRotatedSquircle(canvas, 0.82f * w, 0.68f * h, 0.26f * w, 0.08f * w, 15f, paint)
+            }
+            1 -> {
+                // Layout 1 (Mirrored): Sea Urchin at top-left, 4-leaf Clover at bottom-right, Sunny at mid-right
+                paint.color = urchinColor
+                drawSeaUrchin(canvas, 0.22f * w, 0.22f * h, 0.26f * w, 0.08f * w, 12, paint)
+
+                paint.color = cloverColor
+                drawClover(canvas, 0.70f * w, 0.82f * h, 0.28f * w, 4, paint)
+
+                paint.color = sunnyColor
+                drawSunny(canvas, 0.84f * w, 0.42f * h, 0.18f * w, 8, paint)
+
+                paint.color = pillColor
+                drawRotatedSquircle(canvas, 0.18f * w, 0.68f * h, 0.26f * w, 0.08f * w, -15f, paint)
+            }
+            2 -> {
+                // Layout 2: Sunny Sunburst Hero at top-center, Sea Urchin at bottom-right, 8-leaf Clover at mid-left
+                paint.color = sunnyColor
+                drawSunny(canvas, 0.50f * w, 0.16f * h, 0.26f * w, 12, paint)
+
+                paint.color = urchinColor
+                drawSeaUrchin(canvas, 0.78f * w, 0.84f * h, 0.28f * w, 0.075f * w, 12, paint)
+
+                paint.color = cloverColor
+                drawClover(canvas, 0.18f * w, 0.58f * h, 0.22f * w, 8, paint)
+            }
+            else -> {
+                // Layout 3: 4-leaf Clover Hero at top-right, Sea Urchin at bottom-left, Sunny at top-left
+                paint.color = cloverColor
+                drawClover(canvas, 0.75f * w, 0.20f * h, 0.28f * w, 4, paint)
+
+                paint.color = urchinColor
+                drawSeaUrchin(canvas, 0.25f * w, 0.85f * h, 0.26f * w, 0.075f * w, 12, paint)
+
+                paint.color = sunnyColor
+                drawSunny(canvas, 0.18f * w, 0.12f * h, 0.16f * w, 8, paint)
+
+                paint.color = pillColor
+                drawOrganicCloudLobe(canvas, 0.85f * w, 0.60f * h, 0.34f * w, 0.18f * h, paint)
+            }
+        }
     }
 
     // =========================================================================

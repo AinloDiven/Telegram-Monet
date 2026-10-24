@@ -57,37 +57,38 @@ jobs:
 
       - name: Prepare APK for Release
         run: |
-          cp app/build/outputs/apk/release/app-release.apk ./TGMonet-Radical-v14.3.0.apk
+          cp app/build/outputs/apk/release/app-release.apk ./TGMonet-Radical-v14.4.0.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TGMonet-Radical-v14.3.0.apk
-          path: TGMonet-Radical-v14.3.0.apk
+          name: TGMonet-Radical-v14.4.0.apk
+          path: TGMonet-Radical-v14.4.0.apk
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v14.3.0-radical
-          name: TGMonet Radical v14.3.0
+          tag_name: v14.4.0-radical
+          name: TGMonet Radical v14.4.0
           body: |
-            ## TGMonet Radical v14.3.0
+            ## TGMonet Radical v14.4.0
 
-            ### 🎯 What's New:
-            - **Pixel 官方标准构图与大幅度多布局换构图 (Genuine Multi-Layout Composition Engine)**:
-              - 完全参考 Google Pixel 官方壁纸规范重构构图秩序，彻底消除无规律乱象与突兀小散点，保留大面积纯净呼吸留白。
-              - 「🎲 换个构图」升级为真大多样性布局生成：对角镜像、边轴翻转、焦点置顶/置底、主次色阶交替，每一次点击都呈现截然不同、秩序分明的官方级标准壁纸。
-              - 完美复刻三大官方经典：
-                1. *Floating Geometry (悬浮极简)*：纯正 45° 圆角方块 (Squircle) 阵列 + 对侧有机软云 (Amoeba) 留白平衡。
-                2. *Pixel Bloom (贝壳花朵)*：Pixel 标志性 12 瓣贝壳花朵徽章 (Scalloped Cog Badge) + 优雅拱顶 + 边缘纵向波浪。
-                3. *Silk Dunes (丝滑沙丘)*：流动多层叠级沙丘贝塞尔带，柔和多层丝滑穿插。
-                4. *Pixel Classic / Fluid Waves / Bauhaus Modern*：同步升级多布局构图支持。
-            - **聊天气泡半透明透光 (Translucent Chat Bubbles)**:
-              - 规范术语为「半透明聊天气泡」，80%~85% 优雅透光度，消除脏黑阴影，与底层壁纸自然辉映。
+            ### 🌊 What's New:
+            - **官方 Material 3 Expressive 形状库 (海胆、四叶草、太阳花)**:
+              - 遵循 [M3 Expressive 官方规范](https://m3.material.io/blog/building-with-m3-expressive)，引入官方海胆 (Sea Urchin / Soft Burst)、四叶草/八叶草 (Clover)、阳光太阳 (Sunny / Sunburst) 等高阶几何元素！
+              - 新增预设 **M3 表现力 (M3 Expressive)**，支持全自动参数化高阶多布局轮转。
+            - **修复壁纸打包进主题不生效的 Bug (WPS Stream Protocol Fix)**:
+              - 经过逆向 Telegram Android 核心源码（`Theme.java:7580-7620`），修复了此前 `WLS=` 抢占覆盖和 offset 格式不匹配的问题。
+              - 现已严格采用 Telegram 原生 `WPS`（Wallpaper Stream）二进制流协议，将高分辨率壁纸直接无缝打入 `.attheme` 文件尾部，导入主题瞬间自动加载壁纸！
+            - **官方标准构图与大幅度多布局换构图**:
+              - 严格依照 Google Pixel 官方壁纸规范，清除凌乱小散点，保留大面积纯净呼吸留白。
+              - 「换个构图」支持 4 种真大多样性大布局变换与色阶交替。
+            - **更新全量 README.md 文档**:
+              - 全面重写项目 README.md，包含核心特色、形状库图表、构建指南与安装指引。
 
             ### 📦 Installation
-            Download and install `TGMonet-Radical-v14.3.0.apk` below. Directly overwrites previous builds seamlessly!
-          files: TGMonet-Radical-v14.3.0.apk
+            Download and install `TGMonet-Radical-v14.4.0.apk` below. Directly overwrites previous builds with no need to uninstall!
+          files: TGMonet-Radical-v14.4.0.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

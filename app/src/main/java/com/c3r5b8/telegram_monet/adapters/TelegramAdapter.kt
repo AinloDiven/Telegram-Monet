@@ -50,6 +50,7 @@ fun changeTextTelegram(
     // Standard semi-transparent text selection highlights conforming to Telegram architecture
     monetList["chat_textSelectBackground_monet"] = withAlpha("a1_300", 0x5A)
     monetList["chat_outTextSelectionHighlight_monet"] = withAlpha("a1_200", 0x7E)
+    monetList["chat_inTextSelectionHighlight_monet"] = withAlpha("a1_300", 0x5A)
 
     val a2_700_2 = withAlpha("a2_700", 0x80)
     val n2_100_2 = withAlpha("n2_100", 0x80)

@@ -67,7 +67,6 @@ val ListToReplaceNewThemeTelegram = listOf(
     "chat_outSentClock",
     "chat_outSentClockSelected",
     "chat_outSiteNameText",
-    "chat_outTextSelectionCursor",
     "chat_outTextSelectionHighlight",
     "chat_outTimeSelectedText",
     "chat_outTimeText",

@@ -17,15 +17,19 @@ import java.util.Locale
 private const val DOWNLOADS_SUBDIR = "TgMonet"
 
 fun saveThemeToDownloads(context: Context, outputFileName: String, content: String) {
+	saveThemeBytesToDownloads(context, outputFileName, content.toByteArray(Charsets.UTF_8))
+}
+
+fun saveThemeBytesToDownloads(context: Context, outputFileName: String, bytes: ByteArray) {
 	val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 	val base = outputFileName.substringBeforeLast(".")
 	val ext = outputFileName.substringAfterLast(".", "")
 	val finalName = if (ext.isEmpty()) "${base}_$timestamp" else "${base}_$timestamp.$ext"
 
 	val ok = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-		saveViaMediaStore(context, finalName, content)
+		saveViaMediaStore(context, finalName, bytes)
 	} else {
-		saveToLegacyDownloads(finalName, content)
+		saveToLegacyDownloads(finalName, bytes)
 	}
 
 	val msg = if (ok) context.getString(R.string.save_to_downloads_success, finalName)
@@ -35,7 +39,7 @@ fun saveThemeToDownloads(context: Context, outputFileName: String, content: Stri
 	}
 }
 
-private fun saveViaMediaStore(context: Context, finalName: String, content: String): Boolean {
+private fun saveViaMediaStore(context: Context, finalName: String, bytes: ByteArray): Boolean {
 	return runCatching {
 		val values = ContentValues().apply {
 			put(MediaStore.Downloads.DISPLAY_NAME, finalName)
@@ -48,13 +52,13 @@ private fun saveViaMediaStore(context: Context, finalName: String, content: Stri
 		val resolver = context.contentResolver
 		val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
 			?: return@runCatching false
-		resolver.openOutputStream(uri)?.use { it.write(content.toByteArray()) }
+		resolver.openOutputStream(uri)?.use { it.write(bytes) }
 			?: return@runCatching false
 		true
 	}.getOrDefault(false)
 }
 
-private fun saveToLegacyDownloads(finalName: String, content: String): Boolean {
+private fun saveToLegacyDownloads(finalName: String, bytes: ByteArray): Boolean {
 	return runCatching {
 		@Suppress("DEPRECATION")
 		val dir = File(
@@ -62,7 +66,7 @@ private fun saveToLegacyDownloads(finalName: String, content: String): Boolean {
 			DOWNLOADS_SUBDIR
 		)
 		if (!dir.exists()) dir.mkdirs()
-		File(dir, finalName).writeText(content)
+		File(dir, finalName).writeBytes(bytes)
 		true
 	}.getOrDefault(false)
 }

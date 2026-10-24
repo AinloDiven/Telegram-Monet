@@ -52,4 +52,17 @@
     <string name="palette_card_apply">应用</string>
     <string name="palette_card_edit">编辑</string>
     <string name="palette_card_rename_title">重命名色板</string>
+
+    <!-- Pixel Wallpaper -->
+    <string name="wallpaper_card_title">Pixel 几何壁纸</string>
+    <string name="wallpaper_card_description">根据当前 Monet 配色动态生成 Pixel 风格几何壁纸，支持保存与随主题打包。</string>
+    <string name="wallpaper_preset_pixel_classic">经典几何</string>
+    <string name="wallpaper_preset_fluid_waves">流体波浪</string>
+    <string name="wallpaper_preset_bauhaus">包豪斯</string>
+    <string name="wallpaper_shuffle">换个构图</string>
+    <string name="wallpaper_save">保存高清壁纸</string>
+    <string name="wallpaper_save_success">壁纸已保存至图库与下载：%1$s</string>
+    <string name="wallpaper_save_failed">壁纸保存失败</string>
+    <string name="wallpaper_attach_to_theme">随主题自动打包</string>
+    <string name="wallpaper_preview_dark">深色预览</string>
 </resources>

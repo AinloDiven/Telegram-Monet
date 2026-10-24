@@ -23,4 +23,8 @@ object Constants {
     const val SHARED_USE_OLD_CHAT_STYLE = "useOldChatStyle"
     const val SHARED_USE_USE_DIVIDER = "useDivider"
     const val SHARED_SELECTED_PALETTE_ID = "selectedPaletteId"
+
+    const val SHARED_WALLPAPER_PRESET = "wallpaperPreset"
+    const val SHARED_WALLPAPER_SEED = "wallpaperSeed"
+    const val SHARED_WALLPAPER_ATTACH_TO_THEME = "wallpaperAttachToTheme"
 }

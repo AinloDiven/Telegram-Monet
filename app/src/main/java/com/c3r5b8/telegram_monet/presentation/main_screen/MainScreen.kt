@@ -11,6 +11,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -22,8 +23,10 @@ import com.c3r5b8.telegram_monet.data.local.entity.PaletteEntity
 import com.c3r5b8.telegram_monet.presentation.main_screen.components.AboutCard
 import com.c3r5b8.telegram_monet.presentation.main_screen.components.CreateThemeCard
 import com.c3r5b8.telegram_monet.presentation.main_screen.components.PaletteCard
+import com.c3r5b8.telegram_monet.presentation.main_screen.components.PixelWallpaperCard
 import com.c3r5b8.telegram_monet.presentation.main_screen.components.SettingsCard
 import com.c3r5b8.telegram_monet.presentation.main_screen.components.TopAppBar
+import com.c3r5b8.telegram_monet.wallpaper.WallpaperPreset
 import androidx.core.net.toUri
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,7 +45,15 @@ fun MainScreen(
 	val allPalettes by viewModel.allPalettes.collectAsState()
 	val selectedPaletteId by viewModel.selectedPaletteId.collectAsState()
 
+	val wallpaperPreset by viewModel.wallpaperPreset.collectAsState()
+	val wallpaperSeed by viewModel.wallpaperSeed.collectAsState()
+	val isDarkWallpaperPreview by viewModel.isDarkWallpaperPreview.collectAsState()
+	val isAttachWallpaperToTheme by viewModel.isAttachWallpaperToTheme.collectAsState()
+
 	val context = LocalContext.current
+	val currentColors = remember(selectedPaletteId, allPalettes) {
+		viewModel.getCurrentMonetColors(context)
+	}
 
 	MainScreenComponent(
 		isAmoled = isAmoled,
@@ -53,6 +64,11 @@ fun MainScreen(
 		isUseDivider = isUseDivider,
 		allPalettes = allPalettes,
 		selectedPaletteId = selectedPaletteId,
+		currentColors = currentColors,
+		wallpaperPreset = wallpaperPreset,
+		wallpaperSeed = wallpaperSeed,
+		isDarkWallpaperPreview = isDarkWallpaperPreview,
+		isAttachWallpaperToTheme = isAttachWallpaperToTheme,
 		setAmoled = { viewModel.setSettings(Constants.SHARED_IS_AMOLED, it) },
 		setGradient = { viewModel.setSettings(Constants.SHARED_USE_GRADIENT, it) },
 		setAvatarGradient = { viewModel.setSettings(Constants.SHARED_USE_GRADIENT_AVATARS, it) },
@@ -64,6 +80,11 @@ fun MainScreen(
 		onEditPalette = onEditPalette,
 		onApplyTheme = { isLight -> viewModel.onShareTheme(context, isLight) },
 		onSaveTheme = { isLight -> viewModel.onSaveTheme(context, isLight) },
+		onSelectWallpaperPreset = { viewModel.setWallpaperPreset(it) },
+		onShuffleWallpaper = { viewModel.shuffleWallpaperSeed() },
+		onToggleDarkWallpaperPreview = { viewModel.toggleDarkWallpaperPreview(it) },
+		onToggleAttachWallpaperToTheme = { viewModel.toggleAttachWallpaperToTheme(it) },
+		onSaveWallpaper = { viewModel.saveWallpaper(context) },
 		onOpenImagePalette = onOpenImagePalette,
 	)
 }
@@ -78,6 +99,11 @@ private fun MainScreenComponent(
 	isUseDivider: Boolean,
 	allPalettes: List<PaletteEntity>,
 	selectedPaletteId: Int,
+	currentColors: Map<String, Int>,
+	wallpaperPreset: WallpaperPreset,
+	wallpaperSeed: Long,
+	isDarkWallpaperPreview: Boolean,
+	isAttachWallpaperToTheme: Boolean,
 	setAmoled: (value: Boolean) -> Unit,
 	setGradient: (value: Boolean) -> Unit,
 	setAvatarGradient: (value: Boolean) -> Unit,
@@ -89,6 +115,11 @@ private fun MainScreenComponent(
 	onEditPalette: (Int) -> Unit,
 	onApplyTheme: (isLight: Boolean) -> Unit,
 	onSaveTheme: (isLight: Boolean) -> Unit,
+	onSelectWallpaperPreset: (WallpaperPreset) -> Unit,
+	onShuffleWallpaper: () -> Unit,
+	onToggleDarkWallpaperPreview: (Boolean) -> Unit,
+	onToggleAttachWallpaperToTheme: (Boolean) -> Unit,
+	onSaveWallpaper: () -> Unit,
 	onOpenImagePalette: () -> Unit,
 ) {
 	val scrollBehavior =
@@ -131,6 +162,22 @@ private fun MainScreenComponent(
 					icon = R.drawable.theme_icon_dark,
 					onApplyClick = { onApplyTheme(false) },
 					onSaveClick = { onSaveTheme(false) },
+				)
+			}
+
+			item {
+				PixelWallpaperCard(
+					colors = currentColors,
+					preset = wallpaperPreset,
+					seed = wallpaperSeed,
+					isDarkPreview = isDarkWallpaperPreview,
+					isAmoled = isAmoled,
+					isAttachToTheme = isAttachWallpaperToTheme,
+					onSelectPreset = onSelectWallpaperPreset,
+					onShuffle = onShuffleWallpaper,
+					onToggleDarkPreview = onToggleDarkWallpaperPreview,
+					onToggleAttachToTheme = onToggleAttachWallpaperToTheme,
+					onSaveWallpaper = onSaveWallpaper,
 				)
 			}
 
@@ -181,6 +228,11 @@ private fun MainScreenPreview() {
 		isUseDivider = false,
 		allPalettes = emptyList(),
 		selectedPaletteId = -1,
+		currentColors = emptyMap(),
+		wallpaperPreset = WallpaperPreset.PIXEL_CLASSIC,
+		wallpaperSeed = 42L,
+		isDarkWallpaperPreview = false,
+		isAttachWallpaperToTheme = false,
 		setAmoled = {},
 		setGradient = {},
 		setAvatarGradient = {},
@@ -192,6 +244,11 @@ private fun MainScreenPreview() {
 		onEditPalette = {},
 		onApplyTheme = { _ -> },
 		onSaveTheme = { _ -> },
+		onSelectWallpaperPreset = {},
+		onShuffleWallpaper = {},
+		onToggleDarkWallpaperPreview = {},
+		onToggleAttachWallpaperToTheme = {},
+		onSaveWallpaper = {},
 		onOpenImagePalette = {},
 	)
 }

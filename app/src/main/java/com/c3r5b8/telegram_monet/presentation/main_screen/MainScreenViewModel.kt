@@ -2,24 +2,31 @@ package com.c3r5b8.telegram_monet.presentation.main_screen
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.c3r5b8.telegram_monet.adapters.buildThemeContent
+import com.c3r5b8.telegram_monet.adapters.buildThemeBytes
 import com.c3r5b8.telegram_monet.adapters.createTheme
-import com.c3r5b8.telegram_monet.adapters.saveThemeToDownloads
+import com.c3r5b8.telegram_monet.adapters.generateMonetColors
+import com.c3r5b8.telegram_monet.adapters.getSystemMonetColors
+import com.c3r5b8.telegram_monet.adapters.saveThemeBytesToDownloads
 import com.c3r5b8.telegram_monet.common.ColorScheme
 import com.c3r5b8.telegram_monet.common.Constants
 import com.c3r5b8.telegram_monet.data.local.entity.PaletteEntity
 import com.c3r5b8.telegram_monet.data.repository.PaletteRepository
+import com.c3r5b8.telegram_monet.wallpaper.PixelWallpaperGenerator
+import com.c3r5b8.telegram_monet.wallpaper.WallpaperConfig
+import com.c3r5b8.telegram_monet.wallpaper.WallpaperPreset
+import com.c3r5b8.telegram_monet.wallpaper.WallpaperStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import androidx.core.content.edit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class MainScreenViewModel(
 	contextParam: Context,
@@ -56,6 +63,50 @@ class MainScreenViewModel(
 	val allPalettes: StateFlow<List<PaletteEntity>> = paletteRepository.getAllPalettes()
 		.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
+	// Wallpaper States
+	private val _wallpaperPreset = MutableStateFlow(
+		runCatching {
+			WallpaperPreset.valueOf(
+				sharedPreferences.getString(Constants.SHARED_WALLPAPER_PRESET, WallpaperPreset.PIXEL_CLASSIC.name)
+					?: WallpaperPreset.PIXEL_CLASSIC.name
+			)
+		}.getOrDefault(WallpaperPreset.PIXEL_CLASSIC)
+	)
+	val wallpaperPreset: StateFlow<WallpaperPreset> = _wallpaperPreset.asStateFlow()
+
+	private val _wallpaperSeed = MutableStateFlow(
+		sharedPreferences.getLong(Constants.SHARED_WALLPAPER_SEED, 42L)
+	)
+	val wallpaperSeed: StateFlow<Long> = _wallpaperSeed.asStateFlow()
+
+	private val _isDarkWallpaperPreview = MutableStateFlow(false)
+	val isDarkWallpaperPreview: StateFlow<Boolean> = _isDarkWallpaperPreview.asStateFlow()
+
+	private val _isAttachWallpaperToTheme = MutableStateFlow(
+		sharedPreferences.getBoolean(Constants.SHARED_WALLPAPER_ATTACH_TO_THEME, false)
+	)
+	val isAttachWallpaperToTheme: StateFlow<Boolean> = _isAttachWallpaperToTheme.asStateFlow()
+
+	fun setWallpaperPreset(preset: WallpaperPreset) {
+		_wallpaperPreset.value = preset
+		sharedPreferences.edit { putString(Constants.SHARED_WALLPAPER_PRESET, preset.name) }
+	}
+
+	fun shuffleWallpaperSeed() {
+		val newSeed = Random.nextLong(1, 100_000)
+		_wallpaperSeed.value = newSeed
+		sharedPreferences.edit { putLong(Constants.SHARED_WALLPAPER_SEED, newSeed) }
+	}
+
+	fun toggleDarkWallpaperPreview(isDark: Boolean) {
+		_isDarkWallpaperPreview.value = isDark
+	}
+
+	fun toggleAttachWallpaperToTheme(attach: Boolean) {
+		_isAttachWallpaperToTheme.value = attach
+		sharedPreferences.edit { putBoolean(Constants.SHARED_WALLPAPER_ATTACH_TO_THEME, attach) }
+	}
+
 	fun selectPalette(paletteId: Int) {
 		_selectedPaletteId.value = paletteId
 		sharedPreferences.edit {
@@ -72,6 +123,38 @@ class MainScreenViewModel(
 		}
 	}
 
+	fun getCurrentMonetColors(context: Context): Map<String, Int> {
+		val palette = allPalettes.value.find { it.id == _selectedPaletteId.value }
+		return if (palette != null) {
+			val customScheme = ColorScheme.fromName(palette.scheme)
+			generateMonetColors(palette.argbColor, customScheme)
+		} else {
+			getSystemMonetColors(context)
+		}
+	}
+
+	fun saveWallpaper(context: Context) {
+		CoroutineScope(Dispatchers.IO).launch {
+			val colors = getCurrentMonetColors(context)
+			val config = WallpaperConfig(
+				preset = _wallpaperPreset.value,
+				seed = _wallpaperSeed.value,
+				isDark = _isDarkWallpaperPreview.value,
+				isAmoled = _isAmoled.value,
+			)
+			val dm = context.resources.displayMetrics
+			val width = maxOf(dm.widthPixels, 1080)
+			val height = maxOf(dm.heightPixels, 2400)
+			val bitmap = PixelWallpaperGenerator.renderToBitmap(width, height, colors, config)
+			WallpaperStorage.saveWallpaperToStorage(
+				context = context,
+				bitmap = bitmap,
+				isDark = _isDarkWallpaperPreview.value,
+				presetName = _wallpaperPreset.value.name,
+			)
+		}
+	}
+
 	fun onShareTheme(context: Context, isLight: Boolean) {
 		val inputFileName = resolveInputFileName(isLight)
 		val outputFileName = resolveOutputFileName(isLight)
@@ -81,6 +164,21 @@ class MainScreenViewModel(
 		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
+			val colors = getCurrentMonetColors(context)
+			val embeddedWallpaperBytes = if (_isAttachWallpaperToTheme.value) {
+				val config = WallpaperConfig(
+					preset = _wallpaperPreset.value,
+					seed = _wallpaperSeed.value,
+					isDark = !isLight,
+					isAmoled = _isAmoled.value,
+				)
+				val dm = context.resources.displayMetrics
+				val width = maxOf(dm.widthPixels, 1080)
+				val height = maxOf(dm.heightPixels, 2400)
+				val bitmap = PixelWallpaperGenerator.renderToBitmap(width, height, colors, config)
+				WallpaperStorage.compressToJpegBytes(bitmap, quality = 92)
+			} else null
+
 			createTheme(
 				context = context,
 				isAmoled = _isAmoled.value,
@@ -93,6 +191,7 @@ class MainScreenViewModel(
 				outputFileName = outputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
+				embeddedWallpaperBytes = embeddedWallpaperBytes,
 			)
 		}
 	}
@@ -106,7 +205,22 @@ class MainScreenViewModel(
 		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
-			val content = buildThemeContent(
+			val colors = getCurrentMonetColors(context)
+			val embeddedWallpaperBytes = if (_isAttachWallpaperToTheme.value) {
+				val config = WallpaperConfig(
+					preset = _wallpaperPreset.value,
+					seed = _wallpaperSeed.value,
+					isDark = !isLight,
+					isAmoled = _isAmoled.value,
+				)
+				val dm = context.resources.displayMetrics
+				val width = maxOf(dm.widthPixels, 1080)
+				val height = maxOf(dm.heightPixels, 2400)
+				val bitmap = PixelWallpaperGenerator.renderToBitmap(width, height, colors, config)
+				WallpaperStorage.compressToJpegBytes(bitmap, quality = 92)
+			} else null
+
+			val themeBytes = buildThemeBytes(
 				context = context,
 				isAmoled = _isAmoled.value,
 				isGradient = _isGradient.value,
@@ -117,8 +231,9 @@ class MainScreenViewModel(
 				inputFileName = inputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
+				embeddedWallpaperBytes = embeddedWallpaperBytes,
 			)
-			saveThemeToDownloads(context, outputFileName, content)
+			saveThemeBytesToDownloads(context, outputFileName, themeBytes)
 		}
 	}
 

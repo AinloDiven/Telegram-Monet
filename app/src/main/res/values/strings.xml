@@ -75,4 +75,17 @@
     <string name="palette_card_apply">Apply</string>
     <string name="palette_card_edit">Edit</string>
     <string name="palette_card_rename_title">Rename palette</string>
+
+    <!-- Pixel Wallpaper -->
+    <string name="wallpaper_card_title">Pixel Geometry Wallpaper</string>
+    <string name="wallpaper_card_description">Generate Material 3 Expressive Pixel-styled geometric wallpapers that match your dynamic colors.</string>
+    <string name="wallpaper_preset_pixel_classic">Classic</string>
+    <string name="wallpaper_preset_fluid_waves">Fluid Waves</string>
+    <string name="wallpaper_preset_bauhaus">Bauhaus</string>
+    <string name="wallpaper_shuffle">Shuffle</string>
+    <string name="wallpaper_save">Save PNG</string>
+    <string name="wallpaper_save_success">Wallpaper saved: %1$s</string>
+    <string name="wallpaper_save_failed">Failed to save wallpaper</string>
+    <string name="wallpaper_attach_to_theme">Attach wallpaper to theme</string>
+    <string name="wallpaper_preview_dark">Dark preview</string>
 </resources>

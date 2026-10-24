@@ -7,6 +7,7 @@ import com.c3r5b8.telegram_monet.common.Constants
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import java.util.Locale
 
 fun createTheme(
     context: Context,
@@ -20,8 +21,9 @@ fun createTheme(
     outputFileName: String,
     customSeedColor: Int = 0,
     customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
+    embeddedWallpaperBytes: ByteArray? = null,
 ) {
-    val generatedTheme = buildThemeContent(
+    val generatedThemeText = buildThemeContent(
         context = context,
         isAmoled = isAmoled,
         isGradient = isGradient,
@@ -34,8 +36,59 @@ fun createTheme(
         customScheme = customScheme,
     )
 
-    File(context.filesDir, outputFileName).writeText(text = generatedTheme)
+    val finalBytes = if (embeddedWallpaperBytes != null && embeddedWallpaperBytes.isNotEmpty()) {
+        appendWallpaperToTheme(generatedThemeText, embeddedWallpaperBytes)
+    } else {
+        generatedThemeText.toByteArray(Charsets.UTF_8)
+    }
+
+    File(context.filesDir, outputFileName).writeBytes(finalBytes)
     shareTheme(context, outputFileName)
+}
+
+fun buildThemeBytes(
+    context: Context,
+    isAmoled: Boolean,
+    isGradient: Boolean,
+    isAvatarGradient: Boolean,
+    isNicknameColorful: Boolean,
+    isAlterOutColor: Boolean,
+    isUseDivider: Boolean,
+    inputFileName: String,
+    customSeedColor: Int = 0,
+    customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
+    embeddedWallpaperBytes: ByteArray? = null,
+): ByteArray {
+    val text = buildThemeContent(
+        context = context,
+        isAmoled = isAmoled,
+        isGradient = isGradient,
+        isAvatarGradient = isAvatarGradient,
+        isNicknameColorful = isNicknameColorful,
+        isAlterOutColor = isAlterOutColor,
+        isUseDivider = isUseDivider,
+        inputFileName = inputFileName,
+        customSeedColor = customSeedColor,
+        customScheme = customScheme,
+    )
+    return if (embeddedWallpaperBytes != null && embeddedWallpaperBytes.isNotEmpty()) {
+        appendWallpaperToTheme(text, embeddedWallpaperBytes)
+    } else {
+        text.toByteArray(Charsets.UTF_8)
+    }
+}
+
+fun appendWallpaperToTheme(themeText: String, wallpaperBytes: ByteArray): ByteArray {
+    val base = themeText.trimEnd() + "\n"
+    val placeholder = "wallpaperFileOffset=0000000000\n"
+    val testOffset = (base + placeholder).toByteArray(Charsets.UTF_8).size
+    val realHeader = String.format(Locale.US, "wallpaperFileOffset=%010d\n", testOffset)
+    val textBytes = (base + realHeader).toByteArray(Charsets.UTF_8)
+
+    val output = ByteArray(textBytes.size + wallpaperBytes.size)
+    System.arraycopy(textBytes, 0, output, 0, textBytes.size)
+    System.arraycopy(wallpaperBytes, 0, output, textBytes.size, wallpaperBytes.size)
+    return output
 }
 
 fun buildThemeContent(

@@ -57,41 +57,37 @@ jobs:
 
       - name: Prepare APK for Release
         run: |
-          cp app/build/outputs/apk/release/app-release.apk ./TGMonet-Radical-v14.2.0.apk
+          cp app/build/outputs/apk/release/app-release.apk ./TGMonet-Radical-v14.3.0.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TGMonet-Radical-v14.2.0.apk
-          path: TGMonet-Radical-v14.2.0.apk
+          name: TGMonet-Radical-v14.3.0.apk
+          path: TGMonet-Radical-v14.3.0.apk
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v14.2.0-radical
-          name: TGMonet Radical v14.2.0
+          tag_name: v14.3.0-radical
+          name: TGMonet Radical v14.3.0
           body: |
-            ## TGMonet Radical v14.2.0
+            ## TGMonet Radical v14.3.0
 
-            ### ✨ What's New:
-            - **Frosted Glass Chat Bubbles (磨砂透明聊天气泡)**:
-              - Messages (`chat_inBubble` & `chat_outBubble`) now feature a translucent frosted glass aesthetic (80%~85% opacity).
-              - When combined with Telegram's blurred wallpaper (`WLS=tg://wallpaper?mode=blur`), the bubbles achieve an authentic glassmorphism frosted glass effect.
-              - Eliminates harsh opaque shadows (`chat_inBubbleShadow=0`, `chat_outBubbleShadow=0`) for a seamless, floating crystal appearance.
-              - Dedicated setting toggle in SettingsCard: toggle on/off anytime.
-            - **Refined & Compact Geometric Scale (缩小几何图形比例)**:
-              - Scaled down shapes across all styles by 25%~35% to provide generous negative space (留白) and high aesthetic balance without cluttering the chat view.
-            - **New Official Google Pixel Wallpaper Styles (扩展官方 Pixel 壁纸样式)**:
-              1. *Pixel Bloom (贝壳花朵)*: Signature 12-lobed Pixel Scalloped Flower Badge, flowing organic vertical contour, and top arch.
-              2. *Floating Geometry (悬浮极简)*: Rotated rounded diamond squircles, soft organic amoeba cloud, and accent pebbles with generous breathing room.
-              3. *Silk Dunes (丝滑沙丘)*: Multi-tone sweeping diagonal strata ribbons with smooth organic curves and warm corner accents.
-              4. *Pixel Classic (经典几何微缩版)*: Refined, compact version of the original Pixel composition.
-              5. *Fluid Waves (流体波浪)*: Smooth wave layers and floating accent pills.
-              6. *Bauhaus Modern (包豪斯现代)*: Slender, architectural geometric forms.
+            ### 🎯 What's New:
+            - **Pixel 官方标准构图与大幅度多布局换构图 (Genuine Multi-Layout Composition Engine)**:
+              - 完全参考 Google Pixel 官方壁纸规范重构构图秩序，彻底消除无规律乱象与突兀小散点，保留大面积纯净呼吸留白。
+              - 「🎲 换个构图」升级为真大多样性布局生成：对角镜像、边轴翻转、焦点置顶/置底、主次色阶交替，每一次点击都呈现截然不同、秩序分明的官方级标准壁纸。
+              - 完美复刻三大官方经典：
+                1. *Floating Geometry (悬浮极简)*：纯正 45° 圆角方块 (Squircle) 阵列 + 对侧有机软云 (Amoeba) 留白平衡。
+                2. *Pixel Bloom (贝壳花朵)*：Pixel 标志性 12 瓣贝壳花朵徽章 (Scalloped Cog Badge) + 优雅拱顶 + 边缘纵向波浪。
+                3. *Silk Dunes (丝滑沙丘)*：流动多层叠级沙丘贝塞尔带，柔和多层丝滑穿插。
+                4. *Pixel Classic / Fluid Waves / Bauhaus Modern*：同步升级多布局构图支持。
+            - **聊天气泡半透明透光 (Translucent Chat Bubbles)**:
+              - 规范术语为「半透明聊天气泡」，80%~85% 优雅透光度，消除脏黑阴影，与底层壁纸自然辉映。
 
             ### 📦 Installation
-            Download and install `TGMonet-Radical-v14.2.0.apk` below. Directly overwrites previous `v14.1.0-radical` builds with no need to uninstall!
-          files: TGMonet-Radical-v14.2.0.apk
+            Download and install `TGMonet-Radical-v14.3.0.apk` below. Directly overwrites previous builds seamlessly!
+          files: TGMonet-Radical-v14.3.0.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

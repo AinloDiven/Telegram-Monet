@@ -56,7 +56,7 @@
     <!-- Pixel Wallpaper -->
     <string name="wallpaper_card_title">Pixel 几何壁纸</string>
     <string name="wallpaper_card_description">根据当前 Monet 配色动态生成 Pixel 风格几何壁纸，支持保存与随主题打包。</string>
-    <string name="settings_card_frosted_bubbles">磨砂透明气泡</string>
+    <string name="settings_card_frosted_bubbles">半透明聊天气泡</string>
     <string name="wallpaper_preset_pixel_classic">经典几何</string>
     <string name="wallpaper_preset_pixel_minimal">悬浮极简</string>
     <string name="wallpaper_preset_pixel_bloom">贝壳花朵</string>

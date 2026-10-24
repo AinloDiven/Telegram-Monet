@@ -18,8 +18,8 @@ android {
         minSdk = 26
         targetSdk = 36
 
-        versionCode = 26102403
-        versionName = "14.2.0-radical"
+        versionCode = 26102404
+        versionName = "14.3.0-radical"
 
         resourceConfigurations.addAll(
             arrayOf(

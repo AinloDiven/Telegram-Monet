@@ -36,6 +36,9 @@ class MainScreenViewModel(
 	private val _isAmoled = MutableStateFlow(false)
 	val isAmoled: StateFlow<Boolean> = _isAmoled.asStateFlow()
 
+	private val _isFrostedBubbles = MutableStateFlow(true)
+	val isFrostedBubbles: StateFlow<Boolean> = _isFrostedBubbles.asStateFlow()
+
 	private val _isGradient = MutableStateFlow(false)
 	val isGradient: StateFlow<Boolean> = _isGradient.asStateFlow()
 
@@ -187,6 +190,7 @@ class MainScreenViewModel(
 				isNicknameColorful = _isNicknameColorful.value,
 				isAlterOutColor = _isAlterOutColor.value,
 				isUseDivider = _isUseDivider.value,
+				isFrostedBubbles = _isFrostedBubbles.value,
 				inputFileName = inputFileName,
 				outputFileName = outputFileName,
 				customSeedColor = customSeedColor,
@@ -228,6 +232,7 @@ class MainScreenViewModel(
 				isNicknameColorful = _isNicknameColorful.value,
 				isAlterOutColor = _isAlterOutColor.value,
 				isUseDivider = _isUseDivider.value,
+				isFrostedBubbles = _isFrostedBubbles.value,
 				inputFileName = inputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
@@ -253,6 +258,7 @@ class MainScreenViewModel(
 	fun setSettings(settings: String, value: Boolean) {
 		when (settings) {
 			Constants.SHARED_IS_AMOLED -> _isAmoled.value = value
+			Constants.SHARED_FROSTED_BUBBLES -> _isFrostedBubbles.value = value
 			Constants.SHARED_USE_GRADIENT -> _isGradient.value = value
 			Constants.SHARED_USE_COLORFUL_NICKNAME -> _isNicknameColorful.value = value
 			Constants.SHARED_USE_GRADIENT_AVATARS -> _isAvatarGradient.value = value
@@ -264,6 +270,7 @@ class MainScreenViewModel(
 
 	private fun getSettings() {
 		_isAmoled.value = sharedPreferences.getBoolean(Constants.SHARED_IS_AMOLED, false)
+		_isFrostedBubbles.value = sharedPreferences.getBoolean(Constants.SHARED_FROSTED_BUBBLES, true)
 		_isGradient.value = sharedPreferences.getBoolean(Constants.SHARED_USE_GRADIENT, false)
 		_isAvatarGradient.value = sharedPreferences.getBoolean(Constants.SHARED_USE_GRADIENT_AVATARS, false)
 		_isNicknameColorful.value = sharedPreferences.getBoolean(Constants.SHARED_USE_COLORFUL_NICKNAME, true)

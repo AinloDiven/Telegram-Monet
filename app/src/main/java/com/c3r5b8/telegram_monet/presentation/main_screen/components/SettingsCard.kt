@@ -24,12 +24,14 @@ import com.c3r5b8.telegram_monet.presentation.main_screen.MainScreen
 @Composable
 fun SettingsCard(
 	isAmoled: Boolean,
+	isFrostedBubbles: Boolean,
 	isGradient: Boolean,
 	isAvatarGradient: Boolean,
 	isNicknameColorful: Boolean,
 	isAlterOutColor: Boolean,
 	isUseDivider: Boolean,
 	setAmoled: (value: Boolean) -> Unit,
+	setFrostedBubbles: (value: Boolean) -> Unit,
 	setGradient: (value: Boolean) -> Unit,
 	setAvatarGradient: (value: Boolean) -> Unit,
 	setNicknameColorful: (value: Boolean) -> Unit,
@@ -47,6 +49,12 @@ fun SettingsCard(
 			stringResource(R.string.settings_card_switch_amoled),
 			isAmoled,
 			setAmoled,
+		)
+
+		SettingItem(
+			stringResource(R.string.settings_card_frosted_bubbles),
+			isFrostedBubbles,
+			setFrostedBubbles,
 		)
 
 		SettingItem(
@@ -122,6 +130,7 @@ private fun SettingItem(
 private fun SettingsPreview() {
 
 	var isAmoled by remember { mutableStateOf(false) }
+	var isFrostedBubbles by remember { mutableStateOf(true) }
 	var isGradient by remember { mutableStateOf(true) }
 	var isAvatarGradient by remember { mutableStateOf(false) }
 	var isNicknameColorful by remember { mutableStateOf(true) }
@@ -130,12 +139,14 @@ private fun SettingsPreview() {
 
 	SettingsCard(
 		isAmoled = isAmoled,
+		isFrostedBubbles = isFrostedBubbles,
 		isGradient = isGradient,
 		isAvatarGradient = isAvatarGradient,
 		isNicknameColorful = isNicknameColorful,
 		isAlterOutColor = isOldChatStyle,
 		isUseDivider = isUseDivider,
 		setAmoled = { isAmoled = it },
+		setFrostedBubbles = { isFrostedBubbles = it },
 		setGradient = { isGradient = it },
 		setAvatarGradient = { isAvatarGradient = it },
 		setNicknameColorful = { isNicknameColorful = it },

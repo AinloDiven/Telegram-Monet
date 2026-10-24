@@ -32,9 +32,20 @@ fun changeTextTelegram(
     monetList["n1_50_glass_70"] = withAlpha("n1_50", 0xB3)
 
     monetList["n1_100_glass_85"] = withAlpha("n1_100", 0xD9)
+    monetList["n1_100_glass_80"] = withAlpha("n1_100", 0xCC)
+    monetList["n1_100_glass_70"] = withAlpha("n1_100", 0xB3)
+
     monetList["a1_700_glass_85"] = withAlpha("a1_700", 0xD9)
+    monetList["a1_700_glass_80"] = withAlpha("a1_700", 0xCC)
+
+    monetList["a1_800_glass_85"] = withAlpha("a1_800", 0xD9)
+    monetList["a1_800_glass_80"] = withAlpha("a1_800", 0xCC)
+
     monetList["a1_200_glass_85"] = withAlpha("a1_200", 0xD9)
+    monetList["a1_200_glass_80"] = withAlpha("a1_200", 0xCC)
+
     monetList["a1_100_glass_85"] = withAlpha("a1_100", 0xD9)
+    monetList["a1_100_glass_80"] = withAlpha("a1_100", 0xCC)
 
     val a2_700_2 = withAlpha("a2_700", 0x80)
     val n2_100_2 = withAlpha("n2_100", 0x80)

@@ -17,6 +17,7 @@ object Constants {
     // SharedPrefs
     const val SHARED_PREF = "switchSettings"
     const val SHARED_IS_AMOLED = "isAmoledMode"
+    const val SHARED_FROSTED_BUBBLES = "isFrostedBubbles"
     const val SHARED_USE_GRADIENT = "useGradient"
     const val SHARED_USE_GRADIENT_AVATARS = "useGradientAvatars"
     const val SHARED_USE_COLORFUL_NICKNAME = "useColorNick"

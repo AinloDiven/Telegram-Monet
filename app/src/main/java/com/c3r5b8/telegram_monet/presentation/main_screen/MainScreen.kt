@@ -37,6 +37,7 @@ fun MainScreen(
 	viewModel: MainScreenViewModel = koinViewModel(),
 ) {
 	val isAmoled by viewModel.isAmoled.collectAsState()
+	val isFrostedBubbles by viewModel.isFrostedBubbles.collectAsState()
 	val isGradient by viewModel.isGradient.collectAsState()
 	val isAvatarGradient by viewModel.isAvatarGradient.collectAsState()
 	val isNicknameColorful by viewModel.isNicknameColorful.collectAsState()
@@ -57,6 +58,7 @@ fun MainScreen(
 
 	MainScreenComponent(
 		isAmoled = isAmoled,
+		isFrostedBubbles = isFrostedBubbles,
 		isGradient = isGradient,
 		isAvatarGradient = isAvatarGradient,
 		isNicknameColorful = isNicknameColorful,
@@ -70,6 +72,7 @@ fun MainScreen(
 		isDarkWallpaperPreview = isDarkWallpaperPreview,
 		isAttachWallpaperToTheme = isAttachWallpaperToTheme,
 		setAmoled = { viewModel.setSettings(Constants.SHARED_IS_AMOLED, it) },
+		setFrostedBubbles = { viewModel.setSettings(Constants.SHARED_FROSTED_BUBBLES, it) },
 		setGradient = { viewModel.setSettings(Constants.SHARED_USE_GRADIENT, it) },
 		setAvatarGradient = { viewModel.setSettings(Constants.SHARED_USE_GRADIENT_AVATARS, it) },
 		setNicknameColorful = { viewModel.setSettings(Constants.SHARED_USE_COLORFUL_NICKNAME, it) },
@@ -92,6 +95,7 @@ fun MainScreen(
 @Composable
 private fun MainScreenComponent(
 	isAmoled: Boolean,
+	isFrostedBubbles: Boolean,
 	isGradient: Boolean,
 	isAvatarGradient: Boolean,
 	isNicknameColorful: Boolean,
@@ -105,6 +109,7 @@ private fun MainScreenComponent(
 	isDarkWallpaperPreview: Boolean,
 	isAttachWallpaperToTheme: Boolean,
 	setAmoled: (value: Boolean) -> Unit,
+	setFrostedBubbles: (value: Boolean) -> Unit,
 	setGradient: (value: Boolean) -> Unit,
 	setAvatarGradient: (value: Boolean) -> Unit,
 	setNicknameColorful: (value: Boolean) -> Unit,
@@ -195,12 +200,14 @@ private fun MainScreenComponent(
 			item {
 				SettingsCard(
 					isAmoled = isAmoled,
+					isFrostedBubbles = isFrostedBubbles,
 					isGradient = isGradient,
 					isAvatarGradient = isAvatarGradient,
 					isNicknameColorful = isNicknameColorful,
 					isAlterOutColor = isAlterOutColor,
 					isUseDivider = isUseDivider,
 					setAmoled = setAmoled,
+					setFrostedBubbles = setFrostedBubbles,
 					setGradient = setGradient,
 					setAvatarGradient = setAvatarGradient,
 					setNicknameColorful = setNicknameColorful,

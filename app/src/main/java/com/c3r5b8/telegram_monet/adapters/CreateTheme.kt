@@ -17,6 +17,7 @@ fun createTheme(
     isNicknameColorful: Boolean,
     isAlterOutColor: Boolean,
     isUseDivider: Boolean,
+    isFrostedBubbles: Boolean = true,
     inputFileName: String,
     outputFileName: String,
     customSeedColor: Int = 0,
@@ -31,6 +32,7 @@ fun createTheme(
         isNicknameColorful = isNicknameColorful,
         isAlterOutColor = isAlterOutColor,
         isUseDivider = isUseDivider,
+        isFrostedBubbles = isFrostedBubbles,
         inputFileName = inputFileName,
         customSeedColor = customSeedColor,
         customScheme = customScheme,
@@ -54,6 +56,7 @@ fun buildThemeBytes(
     isNicknameColorful: Boolean,
     isAlterOutColor: Boolean,
     isUseDivider: Boolean,
+    isFrostedBubbles: Boolean = true,
     inputFileName: String,
     customSeedColor: Int = 0,
     customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
@@ -67,6 +70,7 @@ fun buildThemeBytes(
         isNicknameColorful = isNicknameColorful,
         isAlterOutColor = isAlterOutColor,
         isUseDivider = isUseDivider,
+        isFrostedBubbles = isFrostedBubbles,
         inputFileName = inputFileName,
         customSeedColor = customSeedColor,
         customScheme = customScheme,
@@ -99,6 +103,7 @@ fun buildThemeContent(
     isNicknameColorful: Boolean,
     isAlterOutColor: Boolean,
     isUseDivider: Boolean,
+    isFrostedBubbles: Boolean = true,
     inputFileName: String,
     customSeedColor: Int = 0,
     customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
@@ -136,6 +141,31 @@ fun buildThemeContent(
     }
 
     var themeImport = listMain.joinToString("\n") + "\n"
+
+    if (isFrostedBubbles) {
+        themeImport = themeImport
+            // Dark theme frosted bubbles (80% / 85% alpha + no harsh drop shadow)
+            .replace("chat_inBubble=n1_800", "chat_inBubble=n1_800_glass_80")
+            .replace("chat_inBubbleLocationPlaceholder=n1_800", "chat_inBubbleLocationPlaceholder=n1_800_glass_80")
+            .replace("chat_inBubbleSelected=n1_800", "chat_inBubbleSelected=n1_800_glass_85")
+            .replace("chat_inBubbleShadow=a1_100", "chat_inBubbleShadow=0")
+            .replace("chat_outBubble=a1_700", "chat_outBubble=a1_700_glass_85")
+            .replace("chat_outBubbleGradient=a1_700", "chat_outBubbleGradient=a1_700_glass_85")
+            .replace("chat_outBubbleGradient2=a1_700", "chat_outBubbleGradient2=a1_700_glass_85")
+            .replace("chat_outBubbleGradient3=a1_800", "chat_outBubbleGradient3=a1_800_glass_85")
+            .replace("chat_outBubbleSelected=a1_700", "chat_outBubbleSelected=a1_700_glass_85")
+            .replace("chat_outBubbleShadow=n2_800", "chat_outBubbleShadow=0")
+            // Light theme frosted bubbles (80% / 85% alpha + no harsh drop shadow)
+            .replace("chat_inBubble=n1_100", "chat_inBubble=n1_100_glass_80")
+            .replace("chat_inBubbleLocationPlaceholder=n1_100", "chat_inBubbleLocationPlaceholder=n1_100_glass_80")
+            .replace("chat_inBubbleSelected=n1_100", "chat_inBubbleSelected=n1_100_glass_85")
+            .replace("chat_inBubbleShadow=a1_300", "chat_inBubbleShadow=0")
+            .replace("chat_outBubble=a1_200", "chat_outBubble=a1_200_glass_85")
+            .replace("chat_outBubbleGradient=a1_200", "chat_outBubbleGradient=a1_200_glass_85")
+            .replace("chat_outBubbleGradient2=a1_200", "chat_outBubbleGradient2=a1_200_glass_85")
+            .replace("chat_outBubbleGradient3=a1_100", "chat_outBubbleGradient3=a1_100_glass_85")
+            .replace("chat_outBubbleSelected=a1_200", "chat_outBubbleSelected=a1_200_glass_85")
+    }
 
     if (isUseDivider) {
         themeImport = themeImport

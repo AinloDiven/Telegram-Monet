@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class MainScreenViewModel(
 	contextParam: Context,
@@ -70,15 +69,15 @@ class MainScreenViewModel(
 	private val _wallpaperPreset = MutableStateFlow(
 		runCatching {
 			WallpaperPreset.valueOf(
-				sharedPreferences.getString(Constants.SHARED_WALLPAPER_PRESET, WallpaperPreset.PIXEL_CLASSIC.name)
-					?: WallpaperPreset.PIXEL_CLASSIC.name
+				sharedPreferences.getString(Constants.SHARED_WALLPAPER_PRESET, WallpaperPreset.M3_EXPRESSIVE.name)
+					?: WallpaperPreset.M3_EXPRESSIVE.name
 			)
-		}.getOrDefault(WallpaperPreset.PIXEL_CLASSIC)
+		}.getOrDefault(WallpaperPreset.M3_EXPRESSIVE)
 	)
 	val wallpaperPreset: StateFlow<WallpaperPreset> = _wallpaperPreset.asStateFlow()
 
 	private val _wallpaperSeed = MutableStateFlow(
-		sharedPreferences.getLong(Constants.SHARED_WALLPAPER_SEED, 42L)
+		sharedPreferences.getLong(Constants.SHARED_WALLPAPER_SEED, 0L)
 	)
 	val wallpaperSeed: StateFlow<Long> = _wallpaperSeed.asStateFlow()
 
@@ -92,11 +91,17 @@ class MainScreenViewModel(
 
 	fun setWallpaperPreset(preset: WallpaperPreset) {
 		_wallpaperPreset.value = preset
-		sharedPreferences.edit { putString(Constants.SHARED_WALLPAPER_PRESET, preset.name) }
+		_wallpaperSeed.value = 0L
+		sharedPreferences.edit {
+			putString(Constants.SHARED_WALLPAPER_PRESET, preset.name)
+			putLong(Constants.SHARED_WALLPAPER_SEED, 0L)
+		}
 	}
 
 	fun shuffleWallpaperSeed() {
-		val newSeed = Random.nextLong(1, 100_000)
+		// Step by +5 (coprime to 12, and 5 % 4 == 1) so every single click is 100% guaranteed
+		// to switch to a new macro layout (0 -> 1 -> 2 -> 3) while cycling all 12 color/layout states.
+		val newSeed = (_wallpaperSeed.value + 5L) % 12L
 		_wallpaperSeed.value = newSeed
 		sharedPreferences.edit { putLong(Constants.SHARED_WALLPAPER_SEED, newSeed) }
 	}

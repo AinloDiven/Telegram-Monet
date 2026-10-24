@@ -15,7 +15,7 @@ enum class WallpaperPreset(@param:StringRes val titleRes: Int) {
 
 data class WallpaperConfig(
     val preset: WallpaperPreset = WallpaperPreset.M3_EXPRESSIVE,
-    val seed: Long = 42L,
+    val seed: Long = 0L,
     val isDark: Boolean = false,
     val isAmoled: Boolean = false,
 )

@@ -10,24 +10,23 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import kotlin.math.abs
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.sin
 
 data class ResolvedWallpaperColors(
-    val background: Int,
-    val primary: Int,
-    val secondary: Int,
-    val tertiary: Int,
-    val accent: Int,
-    val slate: Int,
-    val vibrant: Int,
-    val softDune: Int,
-    val lightDune: Int,
-    val yellowPop: Int,
-    val circle: Int = secondary,
-    val dot: Int = accent,
-    val rect: Int = primary,
-    val wave: Int = primary,
-    val secondaryWave: Int = secondary,
+    val bgSoft: Int,
+    val bgToned: Int,
+    val primarySoft: Int,
+    val primaryPastel: Int,
+    val primaryBold: Int,
+    val secondarySoft: Int,
+    val secondaryPastel: Int,
+    val secondaryMid: Int,
+    val tertiarySoft: Int,
+    val tertiaryPastel: Int,
+    val tertiaryMid: Int,
+    val neutralMid: Int,
+    val accentPop: Int,
 )
 
 object PixelWallpaperGenerator {
@@ -38,64 +37,70 @@ object PixelWallpaperGenerator {
         isAmoled: Boolean,
     ): ResolvedWallpaperColors {
         return if (!isDark) {
-            val bg = colors["n1_50"] ?: colors["n1_100"] ?: 0xFFEFF4FA.toInt()
-            val primary = colors["a1_300"] ?: colors["a1_400"] ?: 0xFF9BC3FF.toInt()
-            val secondary = colors["a2_200"] ?: colors["a2_300"] ?: 0xFFBFD9FF.toInt()
-            val tertiary = colors["a3_300"] ?: colors["a3_200"] ?: 0xFF79BBAD.toInt()
-            val accent = colors["a3_500"] ?: colors["a3_600"] ?: 0xFFFF5449.toInt()
-            val slate = colors["n2_200"] ?: colors["n2_300"] ?: 0xFFB8C7DA.toInt()
-            val vibrant = colors["a1_500"] ?: colors["a1_600"] ?: 0xFF4385F4.toInt()
-            val softDune = colors["a1_200"] ?: colors["a1_100"] ?: 0xFFFED9CD.toInt()
-            val lightDune = colors["a2_100"] ?: colors["a2_50"] ?: 0xFFEBD5DB.toInt()
-            val yellowPop = colors["a3_200"] ?: colors["a3_100"] ?: 0xFFF9F57F.toInt()
+            val bgSoft = colors["n1_50"] ?: colors["n1_100"] ?: 0xFFEEF3FC.toInt()
+            val bgToned = colors["a1_100"] ?: colors["a1_200"] ?: 0xFFFEA49C.toInt()
+            val primarySoft = colors["a1_200"] ?: 0xFFB8D4FF.toInt()
+            val primaryPastel = colors["a1_300"] ?: 0xFF92BFFF.toInt()
+            val primaryBold = colors["a1_500"] ?: colors["a1_400"] ?: 0xFF4482F6.toInt()
+            val secondarySoft = colors["a2_100"] ?: 0xFFD5E3FA.toInt()
+            val secondaryPastel = colors["a2_200"] ?: 0xFFC2D7FF.toInt()
+            val secondaryMid = colors["a2_300"] ?: 0xFFA6C2ED.toInt()
+            val tertiarySoft = colors["a3_100"] ?: 0xFFFFD9CC.toInt()
+            val tertiaryPastel = colors["a3_200"] ?: 0xFFFAF473.toInt()
+            val tertiaryMid = colors["a3_300"] ?: 0xFF6CB49F.toInt()
+            val neutralMid = colors["n2_200"] ?: colors["n2_300"] ?: 0xFFB7C5D8.toInt()
+            val accentPop = colors["a3_500"] ?: colors["a1_600"] ?: 0xFFF42D20.toInt()
             ResolvedWallpaperColors(
-                background = bg,
-                primary = primary,
-                secondary = secondary,
-                tertiary = tertiary,
-                accent = accent,
-                slate = slate,
-                vibrant = vibrant,
-                softDune = softDune,
-                lightDune = lightDune,
-                yellowPop = yellowPop,
-                circle = secondary,
-                dot = accent,
-                rect = primary,
-                wave = primary,
-                secondaryWave = secondary,
+                bgSoft = bgSoft,
+                bgToned = bgToned,
+                primarySoft = primarySoft,
+                primaryPastel = primaryPastel,
+                primaryBold = primaryBold,
+                secondarySoft = secondarySoft,
+                secondaryPastel = secondaryPastel,
+                secondaryMid = secondaryMid,
+                tertiarySoft = tertiarySoft,
+                tertiaryPastel = tertiaryPastel,
+                tertiaryMid = tertiaryMid,
+                neutralMid = neutralMid,
+                accentPop = accentPop,
             )
         } else {
-            val bg = if (isAmoled) {
+            val bgSoft = if (isAmoled) {
                 colors["n1_1000"] ?: 0xFF000000.toInt()
             } else {
                 colors["n1_900"] ?: 0xFF141218.toInt()
             }
-            val primary = colors["a1_700"] ?: colors["a1_800"] ?: 0xFF39293C.toInt()
-            val secondary = colors["a2_800"] ?: colors["a2_900"] ?: 0xFF2A2030.toInt()
-            val tertiary = colors["a3_700"] ?: colors["a3_800"] ?: 0xFF243B36.toInt()
-            val accent = colors["a3_400"] ?: colors["a3_300"] ?: 0xFFFFB4AB.toInt()
-            val slate = colors["n2_700"] ?: colors["n2_800"] ?: 0xFF352B3E.toInt()
-            val vibrant = colors["a1_400"] ?: colors["a1_300"] ?: 0xFFA8C7FA.toInt()
-            val softDune = colors["a1_800"] ?: colors["a1_900"] ?: 0xFF4D2B28.toInt()
-            val lightDune = colors["a2_900"] ?: colors["a2_800"] ?: 0xFF362534.toInt()
-            val yellowPop = colors["a3_300"] ?: colors["a3_400"] ?: 0xFFD8D25F.toInt()
+            val bgToned = if (isAmoled) {
+                colors["n1_1000"] ?: 0xFF000000.toInt()
+            } else {
+                colors["n2_900"] ?: colors["n1_900"] ?: 0xFF1C1922.toInt()
+            }
+            val primarySoft = colors["a1_800"] ?: 0xFF233654.toInt()
+            val primaryPastel = colors["a1_700"] ?: 0xFF2E476E.toInt()
+            val primaryBold = colors["a1_600"] ?: 0xFF3B5B8C.toInt()
+            val secondarySoft = colors["a2_800"] ?: 0xFF283140.toInt()
+            val secondaryPastel = colors["a2_700"] ?: 0xFF354154.toInt()
+            val secondaryMid = colors["a2_600"] ?: 0xFF46556D.toInt()
+            val tertiarySoft = colors["a3_800"] ?: 0xFF223D36.toInt()
+            val tertiaryPastel = colors["a3_600"] ?: 0xFF386459.toInt()
+            val tertiaryMid = colors["a3_700"] ?: 0xFF2C5047.toInt()
+            val neutralMid = colors["n2_700"] ?: 0xFF3A3F4B.toInt()
+            val accentPop = colors["a3_400"] ?: colors["a1_400"] ?: 0xFFFF897D.toInt()
             ResolvedWallpaperColors(
-                background = bg,
-                primary = primary,
-                secondary = secondary,
-                tertiary = tertiary,
-                accent = accent,
-                slate = slate,
-                vibrant = vibrant,
-                softDune = softDune,
-                lightDune = lightDune,
-                yellowPop = yellowPop,
-                circle = secondary,
-                dot = accent,
-                rect = primary,
-                wave = primary,
-                secondaryWave = secondary,
+                bgSoft = bgSoft,
+                bgToned = bgToned,
+                primarySoft = primarySoft,
+                primaryPastel = primaryPastel,
+                primaryBold = primaryBold,
+                secondarySoft = secondarySoft,
+                secondaryPastel = secondaryPastel,
+                secondaryMid = secondaryMid,
+                tertiarySoft = tertiarySoft,
+                tertiaryPastel = tertiaryPastel,
+                tertiaryMid = tertiaryMid,
+                neutralMid = neutralMid,
+                accentPop = accentPop,
             )
         }
     }
@@ -134,13 +139,9 @@ object PixelWallpaperGenerator {
         val resolved = resolveColors(colors, config.isDark, config.isAmoled)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.FILL
+            isDither = true
         }
 
-        // Draw background
-        paint.color = resolved.background
-        canvas.drawRect(0f, 0f, w, h, paint)
-
-        // Extract genuine compositional layout variants from the seed
         val layoutIndex = (abs(config.seed) % 4).toInt()
         val colorVariant = ((abs(config.seed) / 4) % 3).toInt()
 
@@ -149,131 +150,141 @@ object PixelWallpaperGenerator {
             WallpaperPreset.PIXEL_MINIMAL -> renderPixelMinimal(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
             WallpaperPreset.PIXEL_BLOOM -> renderPixelBloom(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
             WallpaperPreset.SILK_DUNES -> renderSilkDunes(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
-            WallpaperPreset.PIXEL_CLASSIC -> renderPixelClassic(canvas, w, h, resolved, paint, layoutIndex)
-            WallpaperPreset.FLUID_WAVES -> renderFluidWaves(canvas, w, h, resolved, paint, layoutIndex)
-            WallpaperPreset.BAUHAUS_MODERN -> renderBauhausModern(canvas, w, h, resolved, paint, layoutIndex)
+            WallpaperPreset.PIXEL_CLASSIC -> renderPixelClassic(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
+            WallpaperPreset.FLUID_WAVES -> renderFluidWaves(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
+            WallpaperPreset.BAUHAUS_MODERN -> renderBauhausModern(canvas, w, h, resolved, paint, layoutIndex, colorVariant)
         }
     }
 
-    private fun drawRotatedSquircle(
+    // =========================================================================
+    // Core Geometric Primitives (Exact C2 Cubic Bezier Star / Cookie / Squircle)
+    // =========================================================================
+
+    private inline fun withQuadrantTransform(
         canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        size: Float,
-        cornerRad: Float,
-        angleDeg: Float,
-        paint: Paint,
+        w: Float,
+        h: Float,
+        layout: Int,
+        block: () -> Unit,
     ) {
+        val sx = if (layout == 1 || layout == 3) -1f else 1f
+        val sy = if (layout == 2 || layout == 3) -1f else 1f
         canvas.save()
-        canvas.rotate(angleDeg, cx, cy)
-        val rectF = RectF(cx - size / 2f, cy - size / 2f, cx + size / 2f, cy + size / 2f)
-        canvas.drawRoundRect(rectF, cornerRad, cornerRad, paint)
+        canvas.scale(sx, sy, w / 2f, h / 2f)
+        block()
         canvas.restore()
     }
 
-    private fun drawScallopedBadge(
+    /**
+     * Draws a tilted rounded rectangle / squircle / stadium pill around (cx, cy).
+     */
+    private fun drawTiltedRoundRect(
         canvas: Canvas,
         cx: Float,
         cy: Float,
-        baseRadius: Float,
-        amplitude: Float,
+        rw: Float,
+        rh: Float,
+        cornerRadius: Float,
+        angleDeg: Float,
+        paint: Paint,
+    ) {
+        val cr = min(cornerRadius, min(rw, rh) / 2f)
+        canvas.save()
+        canvas.rotate(angleDeg, cx, cy)
+        val rectF = RectF(cx - rw / 2f, cy - rh / 2f, cx + rw / 2f, cy + rh / 2f)
+        canvas.drawRoundRect(rectF, cr, cr, paint)
+        canvas.restore()
+    }
+
+    /**
+     * Draws a smooth C2-continuous Material 3 Expressive Star / Cookie / Clover / Burst polygon
+     * using exact circumferential cubic Bezier tangents at alternating peaks and valleys.
+     *
+     * Key shape recipes:
+     * - Cookie4Sided (Sample 2 Cloud): lobes=4, innerRatio=0.72f, peakRound=0.37f, valleyRound=0.37f
+     * - Clover4Leaf (4-Leaf Clover):   lobes=4, innerRatio=0.46f, peakRound=0.58f, valleyRound=0.08f
+     * - Clover8Leaf (8-Leaf Flower):   lobes=8, innerRatio=0.70f, peakRound=0.48f, valleyRound=0.12f
+     * - Sunny (8-Ray Sunburst):        lobes=8, innerRatio=0.80f, peakRound=0.30f, valleyRound=0.35f
+     * - SoftBurst / Sea Urchin:        lobes=16, innerRatio=0.80f, peakRound=0.26f, valleyRound=0.30f
+     * - Cookie9Sided (Sample 3 Bloom): lobes=9, innerRatio=0.90f, peakRound=0.363f, valleyRound=0.363f
+     */
+    private fun drawRoundedStarPolygon(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        outerRadius: Float,
+        innerRatio: Float,
         lobes: Int,
+        peakRound: Float,
+        valleyRound: Float,
+        rotDeg: Float = 0f,
         paint: Paint,
     ) {
-        val path = Path()
-        val stepCount = lobes * 8
-        for (i in 0 until stepCount) {
-            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
-            val r = baseRadius + amplitude * cos((lobes * theta).toDouble()).toFloat()
-            val x = cx + r * cos(theta.toDouble()).toFloat()
-            val y = cy + r * sin(theta.toDouble()).toFloat()
-            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-        }
-        path.close()
-        canvas.drawPath(path, paint)
-    }
+        val innerRadius = outerRadius * innerRatio
+        val rotRad = Math.toRadians(rotDeg.toDouble()).toFloat()
+        val halfStep = (Math.PI / lobes).toFloat()
+        val hOut = peakRound * outerRadius * halfStep
+        val hIn = valleyRound * innerRadius * halfStep
 
-    private fun drawOrganicCloudLobe(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        rx: Float,
-        ry: Float,
-        paint: Paint,
-    ) {
-        val rectF = RectF(cx - rx, cy - ry, cx + rx, cy + ry)
-        canvas.drawOval(rectF, paint)
-    }
-
-    private fun drawSeaUrchin(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        baseRadius: Float,
-        spikeAmplitude: Float,
-        spikes: Int = 12,
-        paint: Paint,
-    ) {
         val path = Path()
-        val stepCount = spikes * 12
-        for (i in 0 until stepCount) {
-            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
-            val wave = cos((spikes * theta).toDouble()).toFloat()
-            val harmonic = 0.25f * cos((2 * spikes * theta).toDouble()).toFloat()
-            val r = baseRadius + spikeAmplitude * (wave + harmonic)
-            val x = cx + r * cos(theta.toDouble()).toFloat()
-            val y = cy + r * sin(theta.toDouble()).toFloat()
-            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-        }
-        path.close()
-        canvas.drawPath(path, paint)
-    }
+        for (i in 0 until lobes) {
+            val a0 = rotRad + i * 2f * halfStep
+            val b0 = a0 + halfStep
+            val a1 = a0 + 2f * halfStep
 
-    private fun drawClover(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        radius: Float,
-        leaves: Int = 4,
-        paint: Paint,
-    ) {
-        val path = Path()
-        val stepCount = leaves * 16
-        for (i in 0 until stepCount) {
-            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
-            val r = radius * (0.75f + 0.25f * cos((leaves * theta).toDouble()).toFloat())
-            val x = cx + r * cos(theta.toDouble()).toFloat()
-            val y = cy + r * sin(theta.toDouble()).toFloat()
-            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
-        }
-        path.close()
-        canvas.drawPath(path, paint)
-    }
+            val cosA0 = cos(a0.toDouble()).toFloat()
+            val sinA0 = sin(a0.toDouble()).toFloat()
+            val p0x = cx + outerRadius * cosA0
+            val p0y = cy + outerRadius * sinA0
+            val t0x = -sinA0
+            val t0y = cosA0
 
-    private fun drawSunny(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        radius: Float,
-        rays: Int = 8,
-        paint: Paint,
-    ) {
-        val path = Path()
-        val stepCount = rays * 12
-        for (i in 0 until stepCount) {
-            val theta = (i * 2.0 * Math.PI / stepCount).toFloat()
-            val r = radius * (0.84f + 0.16f * cos((rays * theta).toDouble()).toFloat())
-            val x = cx + r * cos(theta.toDouble()).toFloat()
-            val y = cy + r * sin(theta.toDouble()).toFloat()
-            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
+            val cosB0 = cos(b0.toDouble()).toFloat()
+            val sinB0 = sin(b0.toDouble()).toFloat()
+            val v0x = cx + innerRadius * cosB0
+            val v0y = cy + innerRadius * sinB0
+            val u0x = -sinB0
+            val u0y = cosB0
+
+            val cosA1 = cos(a1.toDouble()).toFloat()
+            val sinA1 = sin(a1.toDouble()).toFloat()
+            val p1x = cx + outerRadius * cosA1
+            val p1y = cy + outerRadius * sinA1
+            val t1x = -sinA1
+            val t1y = cosA1
+
+            if (i == 0) {
+                path.moveTo(p0x, p0y)
+            }
+
+            // Peak p0 -> Valley v0
+            path.cubicTo(
+                p0x + hOut * t0x,
+                p0y + hOut * t0y,
+                v0x - hIn * u0x,
+                v0y - hIn * u0y,
+                v0x,
+                v0y,
+            )
+
+            // Valley v0 -> Next Peak p1
+            path.cubicTo(
+                v0x + hIn * u0x,
+                v0y + hIn * u0y,
+                p1x - hOut * t1x,
+                p1y - hOut * t1y,
+                p1x,
+                p1y,
+            )
         }
         path.close()
         canvas.drawPath(path, paint)
     }
 
     // =========================================================================
-    // 0. M3_EXPRESSIVE (Official Material 3 Expressive Shape Family)
-    // Features Sea Urchin (海胆), 4/8-Leaf Clover (四叶草), Sunny (阳光太阳)
+    // 0. M3_EXPRESSIVE (Official Material 3 Expressive Macro Shape Family)
+    // Showcases Sea Urchin (16-ray SoftBurst), Clover4Leaf, Clover8Leaf, Sunny,
+    // Cookie4Sided, and Stadium Pill in authentic edge-cropped Pixel layouts.
     // =========================================================================
     private fun renderM3Expressive(
         canvas: Canvas,
@@ -284,83 +295,95 @@ object PixelWallpaperGenerator {
         layout: Int,
         colorVariant: Int,
     ) {
-        val urchinColor = when (colorVariant) {
-            0 -> colors.vibrant
-            1 -> colors.primary
-            else -> colors.accent
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
+
+        val heroA = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.primaryBold
+            else -> colors.tertiaryMid
         }
-        val cloverColor = when (colorVariant) {
-            0 -> colors.tertiary
-            1 -> colors.secondary
-            else -> colors.primary
+        val heroB = when (colorVariant) {
+            0 -> colors.secondarySoft
+            1 -> colors.primaryPastel
+            else -> colors.secondaryPastel
         }
-        val sunnyColor = when (colorVariant) {
-            0 -> colors.yellowPop
-            1 -> colors.accent
-            else -> colors.softDune
+        val anchorC = when (colorVariant) {
+            0 -> colors.tertiaryMid
+            1 -> colors.secondaryMid
+            else -> colors.primaryBold
         }
-        val pillColor = colors.secondary
+        val midCircle = colors.neutralMid
+        val dotColor = colors.accentPop
 
         when (layout) {
             0 -> {
-                // Layout 0: Sea Urchin Hero at top-right, 4-leaf Clover at bottom-left, Sunny accent at mid-left
-                paint.color = urchinColor
-                drawSeaUrchin(canvas, 0.78f * w, 0.22f * h, 0.26f * w, 0.08f * w, 12, paint)
+                // Layout 0: 16-Ray Sea Urchin (top-right) + 4-Leaf Clover (mid-left) + Tilted Pill (bottom-right) + Dot
+                paint.color = heroA
+                drawRoundedStarPolygon(canvas, 0.82f * w, 0.10f * h, 0.44f * w, 0.80f, 16, 0.26f, 0.30f, 11.25f, paint)
 
-                paint.color = cloverColor
-                drawClover(canvas, 0.30f * w, 0.82f * h, 0.28f * w, 4, paint)
+                paint.color = heroB
+                drawRoundedStarPolygon(canvas, -0.04f * w, 0.50f * h, 0.44f * w, 0.46f, 4, 0.58f, 0.08f, 28f, paint)
 
-                paint.color = sunnyColor
-                drawSunny(canvas, 0.16f * w, 0.42f * h, 0.18f * w, 8, paint)
+                paint.color = anchorC
+                drawTiltedRoundRect(canvas, 0.74f * w, 0.88f * h, 0.66f * w, 0.38f * w, 0.19f * w, -36f, paint)
 
-                paint.color = pillColor
-                drawRotatedSquircle(canvas, 0.82f * w, 0.68f * h, 0.26f * w, 0.08f * w, 15f, paint)
+                paint.color = dotColor
+                canvas.drawCircle(0.30f * w, 0.23f * h, 0.048f * w, paint)
             }
             1 -> {
-                // Layout 1 (Mirrored): Sea Urchin at top-left, 4-leaf Clover at bottom-right, Sunny at mid-right
-                paint.color = urchinColor
-                drawSeaUrchin(canvas, 0.22f * w, 0.22f * h, 0.26f * w, 0.08f * w, 12, paint)
+                // Layout 1: 8-Ray Sunny (top-left) + Cookie4Sided Cloud (mid-right) + 8-Leaf Flower (bottom-left) + Dot
+                paint.color = heroA
+                drawRoundedStarPolygon(canvas, 0.16f * w, 0.10f * h, 0.44f * w, 0.80f, 8, 0.30f, 0.35f, 22.5f, paint)
 
-                paint.color = cloverColor
-                drawClover(canvas, 0.70f * w, 0.82f * h, 0.28f * w, 4, paint)
+                paint.color = heroB
+                drawRoundedStarPolygon(canvas, 0.92f * w, 0.46f * h, 0.54f * w, 0.72f, 4, 0.37f, 0.37f, 14f, paint)
 
-                paint.color = sunnyColor
-                drawSunny(canvas, 0.84f * w, 0.42f * h, 0.18f * w, 8, paint)
+                paint.color = anchorC
+                drawRoundedStarPolygon(canvas, 0.22f * w, 0.86f * h, 0.40f * w, 0.70f, 8, 0.48f, 0.12f, 15f, paint)
 
-                paint.color = pillColor
-                drawRotatedSquircle(canvas, 0.18f * w, 0.68f * h, 0.26f * w, 0.08f * w, -15f, paint)
+                paint.color = dotColor
+                canvas.drawCircle(0.68f * w, 0.74f * h, 0.048f * w, paint)
             }
             2 -> {
-                // Layout 2: Sunny Sunburst Hero at top-center, Sea Urchin at bottom-right, 8-leaf Clover at mid-left
-                paint.color = sunnyColor
-                drawSunny(canvas, 0.50f * w, 0.16f * h, 0.26f * w, 12, paint)
+                // Layout 2: Giant Circle Dome (top-left) + Tilted Card (mid-right) + 16-Ray Sea Urchin (bottom-left) + Circle & Dot
+                paint.color = heroB
+                canvas.drawCircle(0.18f * w, 0.06f * h, 0.46f * w, paint)
 
-                paint.color = urchinColor
-                drawSeaUrchin(canvas, 0.78f * w, 0.84f * h, 0.28f * w, 0.075f * w, 12, paint)
+                paint.color = anchorC
+                drawTiltedRoundRect(canvas, 0.92f * w, 0.52f * h, 0.44f * w, 0.34f * h, 0.075f * w, 13f, paint)
 
-                paint.color = cloverColor
-                drawClover(canvas, 0.18f * w, 0.58f * h, 0.22f * w, 8, paint)
+                paint.color = colors.primaryBold
+                drawRoundedStarPolygon(canvas, 0.22f * w, 0.86f * h, 0.42f * w, 0.80f, 16, 0.26f, 0.30f, 11.25f, paint)
+
+                paint.color = heroA
+                canvas.drawCircle(0.46f * w, 0.42f * h, 0.145f * w, paint)
+
+                paint.color = dotColor
+                canvas.drawCircle(0.66f * w, 0.33f * h, 0.048f * w, paint)
             }
             else -> {
-                // Layout 3: 4-leaf Clover Hero at top-right, Sea Urchin at bottom-left, Sunny at top-left
-                paint.color = cloverColor
-                drawClover(canvas, 0.75f * w, 0.20f * h, 0.28f * w, 4, paint)
+                // Layout 3: 4-Leaf Clover (top-right) + Tilted Squircle (mid-left) + 8-Ray Sunny (bottom-right) + Circle & Dot
+                paint.color = heroA
+                drawRoundedStarPolygon(canvas, 0.84f * w, 0.11f * h, 0.44f * w, 0.46f, 4, 0.58f, 0.08f, 32f, paint)
 
-                paint.color = urchinColor
-                drawSeaUrchin(canvas, 0.25f * w, 0.85f * h, 0.26f * w, 0.075f * w, 12, paint)
+                paint.color = anchorC
+                drawTiltedRoundRect(canvas, -0.08f * w, 0.52f * h, 0.48f * w, 0.48f * w, 0.13f * w, 42f, paint)
 
-                paint.color = sunnyColor
-                drawSunny(canvas, 0.18f * w, 0.12f * h, 0.16f * w, 8, paint)
+                paint.color = colors.primaryBold
+                drawRoundedStarPolygon(canvas, 0.78f * w, 0.85f * h, 0.41f * w, 0.80f, 8, 0.30f, 0.35f, 22.5f, paint)
 
-                paint.color = pillColor
-                drawOrganicCloudLobe(canvas, 0.85f * w, 0.60f * h, 0.34f * w, 0.18f * h, paint)
+                paint.color = midCircle
+                canvas.drawCircle(0.46f * w, 0.45f * h, 0.14f * w, paint)
+
+                paint.color = dotColor
+                canvas.drawCircle(0.28f * w, 0.36f * h, 0.046f * w, paint)
             }
         }
     }
 
     // =========================================================================
-    // 1. PIXEL_MINIMAL (Strict adherence to Reference 1)
-    // Cohesive 45° Squircles + balancing soft organic lobe. Generous negative space.
+    // 1. PIXEL_MINIMAL (Official Sample 2: Floating Squircles & 4-Sided Cookie)
     // =========================================================================
     private fun renderPixelMinimal(
         canvas: Canvas,
@@ -371,86 +394,58 @@ object PixelWallpaperGenerator {
         layout: Int,
         colorVariant: Int,
     ) {
-        val c1 = when (colorVariant) {
-            0 -> colors.primary
-            1 -> colors.secondary
-            else -> colors.tertiary
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
+
+        val topSqColor = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.tertiaryMid
+            else -> colors.secondaryMid
         }
-        val c2 = when (colorVariant) {
-            0 -> colors.tertiary
-            1 -> colors.primary
-            else -> colors.slate
+        val midSqColor = when (colorVariant) {
+            0 -> colors.tertiaryMid
+            1 -> colors.primaryPastel
+            else -> colors.primaryBold
         }
-        val c3 = when (colorVariant) {
-            0 -> colors.slate
-            1 -> colors.tertiary
-            else -> colors.primary
+        val botSqColor = when (colorVariant) {
+            0 -> colors.neutralMid
+            1 -> colors.secondaryPastel
+            else -> colors.tertiaryMid
         }
-        val cloudColor = colors.secondary
+        val cookieColor = colors.secondarySoft
 
-        when (layout) {
-            0 -> {
-                // Canonical Reference 1: Left-anchored diagonal squircles + right balancing lobe
-                paint.color = cloudColor
-                drawOrganicCloudLobe(canvas, 0.85f * w, 0.45f * h, 0.42f * w, 0.22f * h, paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // Right edge-cropped 4-Sided Cookie Cloud
+            paint.color = cookieColor
+            drawRoundedStarPolygon(
+                canvas = canvas,
+                cx = 0.90f * w,
+                cy = 0.452f * h,
+                outerRadius = 0.58f * w,
+                innerRatio = 0.72f,
+                lobes = 4,
+                peakRound = 0.37f,
+                valleyRound = 0.37f,
+                rotDeg = 13f,
+                paint = paint,
+            )
 
-                paint.color = c1
-                drawRotatedSquircle(canvas, 0.15f * w, 0.10f * h, 0.44f * w, 0.14f * w, 45f, paint)
+            // Top-left tilted squircle
+            paint.color = topSqColor
+            drawTiltedRoundRect(canvas, 0.14f * w, 0.11f * h, 0.54f * w, 0.54f * w, 0.14f * w, -38f, paint)
 
-                paint.color = c2
-                drawRotatedSquircle(canvas, -0.05f * w, 0.52f * h, 0.40f * w, 0.13f * w, 45f, paint)
+            // Mid-left tilted squircle
+            paint.color = midSqColor
+            drawTiltedRoundRect(canvas, -0.10f * w, 0.555f * h, 0.48f * w, 0.48f * w, 0.12f * w, 45f, paint)
 
-                paint.color = c3
-                drawRotatedSquircle(canvas, 0.35f * w, 0.90f * h, 0.62f * w, 0.20f * w, 45f, paint)
-            }
-            1 -> {
-                // Mirrored: Right-anchored diagonal squircles + left balancing lobe
-                paint.color = cloudColor
-                drawOrganicCloudLobe(canvas, 0.15f * w, 0.45f * h, 0.42f * w, 0.22f * h, paint)
-
-                paint.color = c1
-                drawRotatedSquircle(canvas, 0.85f * w, 0.10f * h, 0.44f * w, 0.14f * w, 45f, paint)
-
-                paint.color = c2
-                drawRotatedSquircle(canvas, 1.05f * w, 0.52f * h, 0.40f * w, 0.13f * w, 45f, paint)
-
-                paint.color = c3
-                drawRotatedSquircle(canvas, 0.65f * w, 0.90f * h, 0.62f * w, 0.20f * w, 45f, paint)
-            }
-            2 -> {
-                // Diagonal Cross-Balance: Top-right & Bottom-left anchors
-                paint.color = cloudColor
-                drawOrganicCloudLobe(canvas, 0.85f * w, 0.50f * h, 0.38f * w, 0.20f * h, paint)
-
-                paint.color = c1
-                drawRotatedSquircle(canvas, 0.80f * w, 0.14f * h, 0.42f * w, 0.13f * w, 45f, paint)
-
-                paint.color = c2
-                drawRotatedSquircle(canvas, 0.05f * w, 0.46f * h, 0.36f * w, 0.11f * w, 45f, paint)
-
-                paint.color = c3
-                drawRotatedSquircle(canvas, 0.70f * w, 0.86f * h, 0.54f * w, 0.17f * w, 45f, paint)
-            }
-            else -> {
-                // Perimeter Spine: Anchored top & bottom with edge balance
-                paint.color = cloudColor
-                drawOrganicCloudLobe(canvas, 0.08f * w, 0.62f * h, 0.36f * w, 0.18f * h, paint)
-
-                paint.color = c1
-                drawRotatedSquircle(canvas, 0.35f * w, 0.08f * h, 0.42f * w, 0.13f * w, 45f, paint)
-
-                paint.color = c2
-                drawRotatedSquircle(canvas, 0.98f * w, 0.40f * h, 0.38f * w, 0.12f * w, 45f, paint)
-
-                paint.color = c3
-                drawRotatedSquircle(canvas, 0.65f * w, 0.92f * h, 0.58f * w, 0.18f * w, 45f, paint)
-            }
+            // Bottom tilted squircle
+            paint.color = botSqColor
+            drawTiltedRoundRect(canvas, 0.42f * w, 0.865f * h, 0.64f * w, 0.64f * w, 0.18f * w, -38f, paint)
         }
     }
 
     // =========================================================================
-    // 2. PIXEL_BLOOM (Strict adherence to Reference 2)
-    // 12-lobed Flower Badge + Arch Dome + Flowing Edge Wave
+    // 2. PIXEL_BLOOM (Official Sample 3: Giant Dome, Multi-Lobe Cloud & Scallop)
     // =========================================================================
     private fun renderPixelBloom(
         canvas: Canvas,
@@ -461,69 +456,61 @@ object PixelWallpaperGenerator {
         layout: Int,
         colorVariant: Int,
     ) {
-        val flowerColor = when (colorVariant) {
-            0 -> colors.vibrant
-            1 -> colors.primary
-            else -> colors.tertiary
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
+
+        val domeColor = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.secondaryMid
+            else -> colors.tertiaryMid
         }
-        val archColor = when (colorVariant) {
-            0 -> colors.primary
-            1 -> colors.secondary
-            else -> colors.slate
+        val cloudColor = when (colorVariant) {
+            0 -> colors.secondaryPastel
+            1 -> colors.secondarySoft
+            else -> colors.primarySoft
         }
-        val waveColor = colors.secondary
+        val scallopColor = when (colorVariant) {
+            0 -> colors.primaryBold
+            1 -> colors.primaryPastel
+            else -> colors.primaryBold
+        }
 
-        when (layout) {
-            0 -> {
-                // Canonical Reference 2: Top-right dome, left vertical wave, bottom-right flower badge
-                paint.color = archColor
-                canvas.drawOval(RectF(0.35f * w, -0.12f * h, 1.35f * w, 0.32f * h), paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // 1. Top-right giant circle dome
+            paint.color = domeColor
+            canvas.drawCircle(0.81f * w, 0.075f * h, 0.50f * w, paint)
 
-                paint.color = waveColor
-                canvas.drawOval(RectF(-0.30f * w, 0.20f * h, 0.32f * w, 0.78f * h), paint)
-
-                paint.color = flowerColor
-                drawScallopedBadge(canvas, 0.82f * w, 0.85f * h, 0.34f * w, 0.028f * w, 12, paint)
+            // 2. Mid-left multi-lobe organic cloud (4-span cubic Bezier contour)
+            paint.color = cloudColor
+            val cloudPath = Path().apply {
+                moveTo(0f, 0.195f * h)
+                cubicTo(0.105f * w, 0.205f * h, 0.145f * w, 0.275f * h, 0.178f * w, 0.355f * h)
+                cubicTo(0.21f * w, 0.43f * h, 0.382f * w, 0.445f * h, 0.382f * w, 0.535f * h)
+                cubicTo(0.382f * w, 0.625f * h, 0.22f * w, 0.655f * h, 0.142f * w, 0.715f * h)
+                cubicTo(0.08f * w, 0.765f * h, 0.045f * w, 0.795f * h, 0f, 0.802f * h)
+                close()
             }
-            1 -> {
-                // Mirrored: Top-left dome, right vertical wave, bottom-left flower badge
-                paint.color = archColor
-                canvas.drawOval(RectF(-0.35f * w, -0.12f * h, 0.65f * w, 0.32f * h), paint)
+            canvas.drawPath(cloudPath, paint)
 
-                paint.color = waveColor
-                canvas.drawOval(RectF(0.68f * w, 0.20f * h, 1.30f * w, 0.78f * h), paint)
-
-                paint.color = flowerColor
-                drawScallopedBadge(canvas, 0.18f * w, 0.85f * h, 0.34f * w, 0.028f * w, 12, paint)
-            }
-            2 -> {
-                // Top-anchored Flower Badge with bottom dome
-                paint.color = archColor
-                canvas.drawOval(RectF(-0.15f * w, 0.75f * h, 0.65f * w, 1.15f * h), paint)
-
-                paint.color = waveColor
-                canvas.drawOval(RectF(0.70f * w, 0.40f * h, 1.25f * w, 0.88f * h), paint)
-
-                paint.color = flowerColor
-                drawScallopedBadge(canvas, 0.80f * w, 0.18f * h, 0.30f * w, 0.025f * w, 12, paint)
-            }
-            else -> {
-                // Center-Offset Bottom Badge with top wide dome
-                paint.color = archColor
-                canvas.drawOval(RectF(0.10f * w, -0.15f * h, 0.90f * w, 0.25f * h), paint)
-
-                paint.color = waveColor
-                canvas.drawOval(RectF(-0.25f * w, 0.35f * h, 0.28f * w, 0.75f * h), paint)
-
-                paint.color = flowerColor
-                drawScallopedBadge(canvas, 0.78f * w, 0.82f * h, 0.32f * w, 0.026f * w, 12, paint)
-            }
+            // 3. Bottom-right 9-lobed soft scallop cookie
+            paint.color = scallopColor
+            drawRoundedStarPolygon(
+                canvas = canvas,
+                cx = 0.765f * w,
+                cy = 0.848f * h,
+                outerRadius = 0.425f * w,
+                innerRatio = 0.905f,
+                lobes = 9,
+                peakRound = 0.363f,
+                valleyRound = 0.363f,
+                rotDeg = 16f,
+                paint = paint,
+            )
         }
     }
 
     // =========================================================================
-    // 3. SILK_DUNES (Strict adherence to Reference 3)
-    // Continuous sweeping diagonal ribbon strata with coordinated cubic beziers.
+    // 3. SILK_DUNES (Official Sample 4: Diagonal Strata & Nested Ribbon)
     // =========================================================================
     private fun renderSilkDunes(
         canvas: Canvas,
@@ -534,185 +521,74 @@ object PixelWallpaperGenerator {
         layout: Int,
         colorVariant: Int,
     ) {
-        val ribbonPrimary = when (colorVariant) {
-            0 -> colors.primary
-            1 -> colors.softDune
-            else -> colors.tertiary
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
+
+        val upperMassColor = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.tertiaryMid
+            else -> colors.secondaryMid
         }
-        val ribbonSecondary = when (colorVariant) {
-            0 -> colors.softDune
-            1 -> colors.primary
-            else -> colors.secondary
+        val ribbonColor = colors.secondarySoft
+        val lowerWaveColor = when (colorVariant) {
+            0 -> colors.tertiarySoft
+            1 -> colors.primarySoft
+            else -> colors.secondaryPastel
         }
-        val crestColor = colors.lightDune
-        val popColor = colors.yellowPop
+        val cornerPopColor = colors.tertiaryPastel
 
-        when (layout) {
-            0 -> {
-                // Canonical Reference 3: Sweeping from top-right to bottom-left
-                paint.color = crestColor
-                val pathCrest = Path().apply {
-                    moveTo(0.50f * w, 0f)
-                    cubicTo(0.70f * w, 0.08f * h, 0.85f * w, 0.16f * h, w, 0.28f * h)
-                    lineTo(w, 0f)
-                    close()
-                }
-                canvas.drawPath(pathCrest, paint)
-
-                paint.color = ribbonPrimary
-                val pathCoral = Path().apply {
-                    moveTo(0f, 0.06f * h)
-                    cubicTo(0.35f * w, 0.16f * h, 0.70f * w, 0.38f * h, w, 0.58f * h)
-                    lineTo(w, 0.72f * h)
-                    cubicTo(0.65f * w, 0.48f * h, 0.30f * w, 0.28f * h, 0f, 0.22f * h)
-                    close()
-                }
-                canvas.drawPath(pathCoral, paint)
-
-                paint.color = ribbonSecondary
-                val pathApricot = Path().apply {
-                    moveTo(0f, 0.36f * h)
-                    cubicTo(0.35f * w, 0.48f * h, 0.65f * w, 0.68f * h, w, 0.88f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathApricot, paint)
-
-                paint.color = popColor
-                val pathPop = Path().apply {
-                    moveTo(0f, 0.75f * h)
-                    cubicTo(0.12f * w, 0.82f * h, 0.18f * w, 0.90f * h, 0.08f * w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathPop, paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // 1. Upper-right sweeping S-curve mass
+            paint.color = upperMassColor
+            val pathUpper = Path().apply {
+                moveTo(0f, 0.032f * h)
+                cubicTo(0.24f * w, 0.08f * h, 0.35f * w, 0.19f * h, 0.44f * w, 0.30f * h)
+                cubicTo(0.54f * w, 0.42f * h, 0.74f * w, 0.47f * h, w, 0.568f * h)
+                lineTo(w, 0f)
+                lineTo(0f, 0f)
+                close()
             }
-            1 -> {
-                // Mirrored: Sweeping from top-left to bottom-right
-                paint.color = crestColor
-                val pathCrest = Path().apply {
-                    moveTo(0.50f * w, 0f)
-                    cubicTo(0.30f * w, 0.08f * h, 0.15f * w, 0.16f * h, 0f, 0.28f * h)
-                    lineTo(0f, 0f)
-                    close()
-                }
-                canvas.drawPath(pathCrest, paint)
+            canvas.drawPath(pathUpper, paint)
 
-                paint.color = ribbonPrimary
-                val pathCoral = Path().apply {
-                    moveTo(w, 0.06f * h)
-                    cubicTo(0.65f * w, 0.16f * h, 0.30f * w, 0.38f * h, 0f, 0.58f * h)
-                    lineTo(0f, 0.72f * h)
-                    cubicTo(0.35f * w, 0.48f * h, 0.70f * w, 0.28f * h, w, 0.22f * h)
-                    close()
-                }
-                canvas.drawPath(pathCoral, paint)
-
-                paint.color = ribbonSecondary
-                val pathApricot = Path().apply {
-                    moveTo(w, 0.36f * h)
-                    cubicTo(0.65f * w, 0.48f * h, 0.35f * w, 0.68f * h, 0f, 0.88f * h)
-                    lineTo(0f, h)
-                    lineTo(w, h)
-                    close()
-                }
-                canvas.drawPath(pathApricot, paint)
-
-                paint.color = popColor
-                val pathPop = Path().apply {
-                    moveTo(w, 0.75f * h)
-                    cubicTo(0.88f * w, 0.82f * h, 0.82f * w, 0.90f * h, 0.92f * w, h)
-                    lineTo(w, h)
-                    close()
-                }
-                canvas.drawPath(pathPop, paint)
+            // 2. Top-right nested S-curve ribbon band
+            paint.color = ribbonColor
+            val pathRibbon = Path().apply {
+                moveTo(0.62f * w, 0f)
+                cubicTo(0.75f * w, 0.045f * h, 0.77f * w, 0.13f * h, 0.84f * w, 0.195f * h)
+                cubicTo(0.89f * w, 0.235f * h, 0.95f * w, 0.245f * h, w, 0.258f * h)
+                lineTo(w, 0.145f * h)
+                cubicTo(0.94f * w, 0.115f * h, 0.91f * w, 0.06f * h, 0.865f * w, 0f)
+                close()
             }
-            2 -> {
-                // Gentle S-curve horizontal undulating strata
-                paint.color = crestColor
-                val pathCrest = Path().apply {
-                    moveTo(0f, 0.14f * h)
-                    cubicTo(0.35f * w, 0.10f * h, 0.65f * w, 0.18f * h, w, 0.12f * h)
-                    lineTo(w, 0f)
-                    lineTo(0f, 0f)
-                    close()
-                }
-                canvas.drawPath(pathCrest, paint)
+            canvas.drawPath(pathRibbon, paint)
 
-                paint.color = ribbonPrimary
-                val pathBand = Path().apply {
-                    moveTo(0f, 0.26f * h)
-                    cubicTo(0.30f * w, 0.32f * h, 0.70f * w, 0.24f * h, w, 0.30f * h)
-                    lineTo(w, 0.48f * h)
-                    cubicTo(0.70f * w, 0.42f * h, 0.30f * w, 0.50f * h, 0f, 0.44f * h)
-                    close()
-                }
-                canvas.drawPath(pathBand, paint)
-
-                paint.color = ribbonSecondary
-                val pathLower = Path().apply {
-                    moveTo(0f, 0.58f * h)
-                    cubicTo(0.35f * w, 0.64f * h, 0.65f * w, 0.56f * h, w, 0.62f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathLower, paint)
-
-                paint.color = popColor
-                val pathPop = Path().apply {
-                    moveTo(0.35f * w, h)
-                    cubicTo(0.50f * w, 0.88f * h, 0.65f * w, 0.92f * h, 0.75f * w, h)
-                    close()
-                }
-                canvas.drawPath(pathPop, paint)
+            // 3. Bottom-left double-S-curve wave mass
+            paint.color = lowerWaveColor
+            val pathLower = Path().apply {
+                moveTo(0f, 0.362f * h)
+                cubicTo(0.09f * w, 0.43f * h, 0.14f * w, 0.55f * h, 0.28f * w, 0.615f * h)
+                cubicTo(0.42f * w, 0.675f * h, 0.54f * w, 0.695f * h, 0.61f * w, 0.81f * h)
+                cubicTo(0.65f * w, 0.88f * h, 0.66f * w, 0.95f * h, 0.715f * w, h)
+                lineTo(0f, h)
+                close()
             }
-            else -> {
-                // Steep diagonal strata (high aesthetic tension)
-                paint.color = crestColor
-                val pathCrest = Path().apply {
-                    moveTo(0.20f * w, 0f)
-                    lineTo(w, 0f)
-                    lineTo(w, 0.38f * h)
-                    close()
-                }
-                canvas.drawPath(pathCrest, paint)
+            canvas.drawPath(pathLower, paint)
 
-                paint.color = ribbonPrimary
-                val pathBand = Path().apply {
-                    moveTo(0f, 0.15f * h)
-                    lineTo(w, 0.65f * h)
-                    lineTo(w, 0.78f * h)
-                    lineTo(0f, 0.32f * h)
-                    close()
-                }
-                canvas.drawPath(pathBand, paint)
-
-                paint.color = ribbonSecondary
-                val pathLower = Path().apply {
-                    moveTo(0f, 0.48f * h)
-                    lineTo(w, 0.95f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathLower, paint)
-
-                paint.color = popColor
-                val pathPop = Path().apply {
-                    moveTo(0f, 0.82f * h)
-                    lineTo(0.22f * w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathPop, paint)
+            // 4. Bottom-left nested corner accent wave
+            paint.color = cornerPopColor
+            val pathPop = Path().apply {
+                moveTo(0f, 0.720f * h)
+                cubicTo(0.065f * w, 0.755f * h, 0.075f * w, 0.835f * h, 0.14f * w, 0.870f * h)
+                cubicTo(0.21f * w, 0.905f * h, 0.34f * w, 0.885f * h, 0.425f * w, h)
+                lineTo(0f, h)
+                close()
             }
+            canvas.drawPath(pathPop, paint)
         }
     }
 
     // =========================================================================
-    // 4. PIXEL_CLASSIC (Scaled-down compact with 4 genuine layout variants)
+    // 4. PIXEL_CLASSIC (Official Sample 1: Horizon Pebble, Wave & Tilted Card)
     // =========================================================================
     private fun renderPixelClassic(
         canvas: Canvas,
@@ -721,99 +597,58 @@ object PixelWallpaperGenerator {
         colors: ResolvedWallpaperColors,
         paint: Paint,
         layout: Int,
+        colorVariant: Int,
     ) {
-        when (layout) {
-            0 -> {
-                // Standard Classic
-                paint.color = colors.circle
-                canvas.drawCircle(0.50f * w, 0.40f * h, 0.115f * w, paint)
+        paint.color = colors.bgToned
+        canvas.drawRect(0f, 0f, w, h, paint)
 
-                paint.color = colors.dot
-                canvas.drawCircle(0.68f * w, 0.33f * h, 0.032f * w, paint)
+        val waveColor = when (colorVariant) {
+            0 -> colors.primaryBold
+            1 -> colors.primaryPastel
+            else -> colors.tertiaryMid
+        }
+        val circleColor = when (colorVariant) {
+            0 -> colors.secondaryMid
+            1 -> colors.tertiaryPastel
+            else -> colors.secondaryPastel
+        }
+        val cardColor = when (colorVariant) {
+            0 -> colors.tertiaryMid
+            1 -> colors.primaryBold
+            else -> colors.primaryPastel
+        }
+        val dotColor = colors.accentPop
 
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.85f * w, 0.54f * h, 0.28f * w, 0.08f * w, -4f, paint)
-
-                paint.color = colors.wave
-                val path = Path().apply {
-                    moveTo(0f, 0.48f * h)
-                    cubicTo(0.12f * w, 0.52f * h, 0.36f * w, 0.56f * h, 0.38f * w, 0.66f * h)
-                    cubicTo(0.38f * w, 0.74f * h, 0.46f * w, 0.80f * h, 0.45f * w, 0.88f * h)
-                    cubicTo(0.44f * w, 0.94f * h, 0.35f * w, 0.98f * h, 0.28f * w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(path, paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // 1. Bottom-left two-lobed organic wave mass
+            paint.color = waveColor
+            val pathWave = Path().apply {
+                moveTo(0f, 0.402f * h)
+                cubicTo(0.08f * w, 0.42f * h, 0.14f * w, 0.465f * h, 0.26f * w, 0.485f * h)
+                cubicTo(0.45f * w, 0.515f * h, 0.53f * w, 0.58f * h, 0.535f * w, 0.655f * h)
+                cubicTo(0.54f * w, 0.72f * h, 0.625f * w, 0.765f * h, 0.605f * w, 0.84f * h)
+                cubicTo(0.585f * w, 0.92f * h, 0.43f * w, 0.945f * h, 0.37f * w, h)
+                lineTo(0f, h)
+                close()
             }
-            1 -> {
-                // Mirrored Classic
-                paint.color = colors.circle
-                canvas.drawCircle(0.50f * w, 0.40f * h, 0.115f * w, paint)
+            canvas.drawPath(pathWave, paint)
 
-                paint.color = colors.dot
-                canvas.drawCircle(0.32f * w, 0.33f * h, 0.032f * w, paint)
+            // 2. Center focal circle
+            paint.color = circleColor
+            canvas.drawCircle(0.50f * w, 0.404f * h, 0.16f * w, paint)
 
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.15f * w, 0.54f * h, 0.28f * w, 0.08f * w, 4f, paint)
+            // 3. Crisp satellite dot
+            paint.color = dotColor
+            canvas.drawCircle(0.71f * w, 0.322f * h, 0.052f * w, paint)
 
-                paint.color = colors.wave
-                val path = Path().apply {
-                    moveTo(w, 0.48f * h)
-                    cubicTo(0.88f * w, 0.52f * h, 0.64f * w, 0.56f * h, 0.62f * w, 0.66f * h)
-                    cubicTo(0.62f * w, 0.74f * h, 0.54f * w, 0.80f * h, 0.55f * w, 0.88f * h)
-                    cubicTo(0.56f * w, 0.94f * h, 0.65f * w, 0.98f * h, 0.72f * w, h)
-                    lineTo(w, h)
-                    close()
-                }
-                canvas.drawPath(path, paint)
-            }
-            2 -> {
-                // Diagonal Classic (Top-anchored wave)
-                paint.color = colors.wave
-                val path = Path().apply {
-                    moveTo(0f, 0.25f * h)
-                    cubicTo(0.20f * w, 0.18f * h, 0.45f * w, 0.22f * h, 0.55f * w, 0.10f * h)
-                    lineTo(0.55f * w, 0f)
-                    lineTo(0f, 0f)
-                    close()
-                }
-                canvas.drawPath(path, paint)
-
-                paint.color = colors.circle
-                canvas.drawCircle(0.48f * w, 0.58f * h, 0.12f * w, paint)
-
-                paint.color = colors.dot
-                canvas.drawCircle(0.28f * w, 0.45f * h, 0.035f * w, paint)
-
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.80f * w, 0.75f * h, 0.30f * w, 0.09f * w, -8f, paint)
-            }
-            else -> {
-                // Center-Spine Classic
-                paint.color = colors.circle
-                canvas.drawCircle(0.50f * w, 0.28f * h, 0.12f * w, paint)
-
-                paint.color = colors.dot
-                canvas.drawCircle(0.68f * w, 0.22f * h, 0.032f * w, paint)
-
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.25f * w, 0.45f * h, 0.26f * w, 0.08f * w, 6f, paint)
-
-                paint.color = colors.wave
-                val path = Path().apply {
-                    moveTo(0f, 0.72f * h)
-                    cubicTo(0.30f * w, 0.68f * h, 0.70f * w, 0.78f * h, w, 0.70f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(path, paint)
-            }
+            // 4. Right edge-cropped tilted rounded rectangle card
+            paint.color = cardColor
+            drawTiltedRoundRect(canvas, 0.905f * w, 0.542f * h, 0.44f * w, 0.355f * h, 0.075f * w, 13f, paint)
         }
     }
 
     // =========================================================================
-    // 5. FLUID_WAVES (Scaled-down with genuine layout variants)
+    // 5. FLUID_WAVES (Opposing Organic Waves, Cookie Cloud & Focal Pebble)
     // =========================================================================
     private fun renderFluidWaves(
         canvas: Canvas,
@@ -822,93 +657,63 @@ object PixelWallpaperGenerator {
         colors: ResolvedWallpaperColors,
         paint: Paint,
         layout: Int,
+        colorVariant: Int,
     ) {
-        when (layout) {
-            0 -> {
-                paint.color = colors.secondaryWave
-                val pathSec = Path().apply {
-                    moveTo(w, 0.18f * h)
-                    cubicTo(0.78f * w, 0.22f * h, 0.58f * w, 0.14f * h, 0.46f * w, 0.28f * h)
-                    cubicTo(0.35f * w, 0.40f * h, 0.60f * w, 0.50f * h, 0.85f * w, 0.54f * h)
-                    lineTo(w, 0.54f * h)
-                    close()
-                }
-                canvas.drawPath(pathSec, paint)
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
 
-                paint.color = colors.circle
-                canvas.drawCircle(0.32f * w, 0.38f * h, 0.125f * w, paint)
+        val upperWaveColor = when (colorVariant) {
+            0 -> colors.secondarySoft
+            1 -> colors.primarySoft
+            else -> colors.tertiarySoft
+        }
+        val lowerWaveColor = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.tertiaryMid
+            else -> colors.primaryBold
+        }
+        val pillColor = colors.tertiaryMid
+        val circleColor = colors.secondaryMid
 
-                paint.color = colors.wave
-                val pathMain = Path().apply {
-                    moveTo(0f, 0.55f * h)
-                    cubicTo(0.22f * w, 0.58f * h, 0.40f * w, 0.72f * h, 0.32f * w, 0.82f * h)
-                    cubicTo(0.26f * w, 0.90f * h, 0.48f * w, 0.96f * h, 0.58f * w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathMain, paint)
-
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.82f * w, 0.75f * h, 0.24f * w, 0.08f * w, -12f, paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // Top-right undulating wave
+            paint.color = upperWaveColor
+            val pathTop = Path().apply {
+                moveTo(0.32f * w, 0f)
+                cubicTo(0.42f * w, 0.09f * h, 0.62f * w, 0.11f * h, 0.68f * w, 0.21f * h)
+                cubicTo(0.74f * w, 0.31f * h, 0.90f * w, 0.34f * h, w, 0.42f * h)
+                lineTo(w, 0f)
+                close()
             }
-            1 -> {
-                // Mirrored
-                paint.color = colors.secondaryWave
-                val pathSec = Path().apply {
-                    moveTo(0f, 0.18f * h)
-                    cubicTo(0.22f * w, 0.22f * h, 0.42f * w, 0.14f * h, 0.54f * w, 0.28f * h)
-                    cubicTo(0.65f * w, 0.40f * h, 0.40f * w, 0.50f * h, 0.15f * w, 0.54f * h)
-                    lineTo(0f, 0.54f * h)
-                    close()
-                }
-                canvas.drawPath(pathSec, paint)
+            canvas.drawPath(pathTop, paint)
 
-                paint.color = colors.circle
-                canvas.drawCircle(0.68f * w, 0.38f * h, 0.125f * w, paint)
-
-                paint.color = colors.wave
-                val pathMain = Path().apply {
-                    moveTo(w, 0.55f * h)
-                    cubicTo(0.78f * w, 0.58f * h, 0.60f * w, 0.72f * h, 0.68f * w, 0.82f * h)
-                    cubicTo(0.74f * w, 0.90f * h, 0.52f * w, 0.96f * h, 0.42f * w, h)
-                    lineTo(w, h)
-                    close()
-                }
-                canvas.drawPath(pathMain, paint)
-
-                paint.color = colors.rect
-                drawRotatedSquircle(canvas, 0.18f * w, 0.75f * h, 0.24f * w, 0.08f * w, 12f, paint)
+            // Bottom-left two-lobed organic wave
+            paint.color = lowerWaveColor
+            val pathBot = Path().apply {
+                moveTo(0f, 0.45f * h)
+                cubicTo(0.10f * w, 0.47f * h, 0.20f * w, 0.52f * h, 0.32f * w, 0.56f * h)
+                cubicTo(0.48f * w, 0.61f * h, 0.52f * w, 0.70f * h, 0.48f * w, 0.80f * h)
+                cubicTo(0.44f * w, 0.90f * h, 0.56f * w, 0.94f * h, 0.62f * w, h)
+                lineTo(0f, h)
+                close()
             }
-            else -> {
-                // Cascading Waves
-                paint.color = colors.secondaryWave
-                val pathTop = Path().apply {
-                    moveTo(0f, 0.20f * h)
-                    cubicTo(0.35f * w, 0.28f * h, 0.65f * w, 0.16f * h, w, 0.24f * h)
-                    lineTo(w, 0f)
-                    lineTo(0f, 0f)
-                    close()
-                }
-                canvas.drawPath(pathTop, paint)
+            canvas.drawPath(pathBot, paint)
 
-                paint.color = colors.circle
-                canvas.drawCircle(0.50f * w, 0.48f * h, 0.13f * w, paint)
+            // Center-left focal circle + satellite dot
+            paint.color = circleColor
+            canvas.drawCircle(0.38f * w, 0.32f * h, 0.145f * w, paint)
 
-                paint.color = colors.wave
-                val pathBottom = Path().apply {
-                    moveTo(0f, 0.70f * h)
-                    cubicTo(0.40f * w, 0.62f * h, 0.60f * w, 0.78f * h, w, 0.68f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathBottom, paint)
-            }
+            paint.color = colors.accentPop
+            canvas.drawCircle(0.58f * w, 0.25f * h, 0.046f * w, paint)
+
+            // Bottom-right tilted stadium pill
+            paint.color = pillColor
+            drawTiltedRoundRect(canvas, 0.86f * w, 0.74f * h, 0.54f * w, 0.32f * w, 0.16f * w, -28f, paint)
         }
     }
 
     // =========================================================================
-    // 6. BAUHAUS_MODERN (Slender modern architectural proportions)
+    // 6. BAUHAUS_MODERN (Macro Architectural Dome, Stadium Pill & Squircle)
     // =========================================================================
     private fun renderBauhausModern(
         canvas: Canvas,
@@ -917,77 +722,46 @@ object PixelWallpaperGenerator {
         colors: ResolvedWallpaperColors,
         paint: Paint,
         layout: Int,
+        colorVariant: Int,
     ) {
-        when (layout) {
-            0 -> {
-                paint.color = colors.secondaryWave
-                canvas.drawCircle(0.72f * w, 0.32f * h, 0.20f * w, paint)
+        paint.color = colors.bgSoft
+        canvas.drawRect(0f, 0f, w, h, paint)
 
-                paint.color = colors.rect
-                val px = 0.32f * w
-                val py = 0.48f * h
-                val pw = 0.20f * w
-                val ph = 0.34f * h
-                canvas.save()
-                canvas.rotate(8f, px, py)
-                canvas.drawRoundRect(RectF(px - pw / 2f, py - ph / 2f, px + pw / 2f, py + ph / 2f), 0.10f * w, 0.10f * w, paint)
-                canvas.restore()
+        val domeColor = when (colorVariant) {
+            0 -> colors.secondarySoft
+            1 -> colors.primarySoft
+            else -> colors.tertiarySoft
+        }
+        val pillColor = when (colorVariant) {
+            0 -> colors.primaryPastel
+            1 -> colors.tertiaryMid
+            else -> colors.primaryBold
+        }
+        val squircleColor = when (colorVariant) {
+            0 -> colors.tertiaryMid
+            1 -> colors.primaryPastel
+            else -> colors.neutralMid
+        }
 
-                paint.color = colors.circle
-                canvas.drawCircle(0.52f * w, 0.58f * h, 0.13f * w, paint)
+        withQuadrantTransform(canvas, w, h, layout) {
+            // Top-right giant architectural dome
+            paint.color = domeColor
+            canvas.drawCircle(0.84f * w, 0.08f * h, 0.48f * w, paint)
 
-                paint.color = colors.wave
-                val pathBase = Path().apply {
-                    moveTo(0f, 0.90f * h)
-                    cubicTo(0.30f * w, 0.86f * h, 0.70f * w, 0.94f * h, w, 0.90f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathBase, paint)
-            }
-            1 -> {
-                // Mirrored
-                paint.color = colors.secondaryWave
-                canvas.drawCircle(0.28f * w, 0.32f * h, 0.20f * w, paint)
+            // Mid-left tilted stadium column
+            paint.color = pillColor
+            drawTiltedRoundRect(canvas, 0.06f * w, 0.46f * h, 0.42f * w, 0.34f * h, 0.21f * w, -16f, paint)
 
-                paint.color = colors.rect
-                val px = 0.68f * w
-                val py = 0.48f * h
-                val pw = 0.20f * w
-                val ph = 0.34f * h
-                canvas.save()
-                canvas.rotate(-8f, px, py)
-                canvas.drawRoundRect(RectF(px - pw / 2f, py - ph / 2f, px + pw / 2f, py + ph / 2f), 0.10f * w, 0.10f * w, paint)
-                canvas.restore()
+            // Bottom-right rotated squircle
+            paint.color = squircleColor
+            drawTiltedRoundRect(canvas, 0.76f * w, 0.86f * h, 0.56f * w, 0.56f * w, 0.15f * w, 36f, paint)
 
-                paint.color = colors.circle
-                canvas.drawCircle(0.48f * w, 0.58f * h, 0.13f * w, paint)
+            // Center-right focal circle + crisp accent dot
+            paint.color = colors.neutralMid
+            canvas.drawCircle(0.58f * w, 0.48f * h, 0.14f * w, paint)
 
-                paint.color = colors.wave
-                val pathBase = Path().apply {
-                    moveTo(0f, 0.90f * h)
-                    cubicTo(0.30f * w, 0.94f * h, 0.70f * w, 0.86f * h, w, 0.90f * h)
-                    lineTo(w, h)
-                    lineTo(0f, h)
-                    close()
-                }
-                canvas.drawPath(pathBase, paint)
-            }
-            else -> {
-                // Dual Column
-                paint.color = colors.secondaryWave
-                canvas.drawCircle(0.50f * w, 0.28f * h, 0.18f * w, paint)
-
-                paint.color = colors.rect
-                canvas.drawRoundRect(RectF(0.20f * w, 0.42f * h, 0.40f * w, 0.78f * h), 0.10f * w, 0.10f * w, paint)
-
-                paint.color = colors.circle
-                canvas.drawRoundRect(RectF(0.60f * w, 0.50f * h, 0.80f * w, 0.86f * h), 0.10f * w, 0.10f * w, paint)
-
-                paint.color = colors.wave
-                canvas.drawRect(0f, 0.92f * h, w, h, paint)
-            }
+            paint.color = colors.accentPop
+            canvas.drawCircle(0.42f * w, 0.36f * h, 0.046f * w, paint)
         }
     }
 }

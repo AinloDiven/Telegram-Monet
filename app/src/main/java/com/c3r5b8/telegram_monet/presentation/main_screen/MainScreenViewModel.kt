@@ -84,11 +84,6 @@ class MainScreenViewModel(
 	private val _isDarkWallpaperPreview = MutableStateFlow(false)
 	val isDarkWallpaperPreview: StateFlow<Boolean> = _isDarkWallpaperPreview.asStateFlow()
 
-	private val _isAttachWallpaperToTheme = MutableStateFlow(
-		sharedPreferences.getBoolean(Constants.SHARED_WALLPAPER_ATTACH_TO_THEME, false)
-	)
-	val isAttachWallpaperToTheme: StateFlow<Boolean> = _isAttachWallpaperToTheme.asStateFlow()
-
 	fun setWallpaperPreset(preset: WallpaperPreset) {
 		_wallpaperPreset.value = preset
 		_wallpaperSeed.value = 0L
@@ -108,11 +103,6 @@ class MainScreenViewModel(
 
 	fun toggleDarkWallpaperPreview(isDark: Boolean) {
 		_isDarkWallpaperPreview.value = isDark
-	}
-
-	fun toggleAttachWallpaperToTheme(attach: Boolean) {
-		_isAttachWallpaperToTheme.value = attach
-		sharedPreferences.edit { putBoolean(Constants.SHARED_WALLPAPER_ATTACH_TO_THEME, attach) }
 	}
 
 	fun selectPalette(paletteId: Int) {
@@ -172,21 +162,6 @@ class MainScreenViewModel(
 		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
-			val colors = getCurrentMonetColors(context)
-			val embeddedWallpaperBytes = if (_isAttachWallpaperToTheme.value) {
-				val config = WallpaperConfig(
-					preset = _wallpaperPreset.value,
-					seed = _wallpaperSeed.value,
-					isDark = !isLight,
-					isAmoled = _isAmoled.value,
-				)
-				val dm = context.resources.displayMetrics
-				val width = maxOf(dm.widthPixels, 1080)
-				val height = maxOf(dm.heightPixels, 2400)
-				val bitmap = PixelWallpaperGenerator.renderToBitmap(width, height, colors, config)
-				WallpaperStorage.compressToJpegBytes(bitmap, quality = 92)
-			} else null
-
 			createTheme(
 				context = context,
 				isAmoled = _isAmoled.value,
@@ -200,7 +175,6 @@ class MainScreenViewModel(
 				outputFileName = outputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
-				embeddedWallpaperBytes = embeddedWallpaperBytes,
 			)
 		}
 	}
@@ -214,21 +188,6 @@ class MainScreenViewModel(
 		val customScheme = palette?.let { ColorScheme.fromName(it.scheme) } ?: ColorScheme.EXPRESSIVE
 
 		CoroutineScope(Dispatchers.IO).launch {
-			val colors = getCurrentMonetColors(context)
-			val embeddedWallpaperBytes = if (_isAttachWallpaperToTheme.value) {
-				val config = WallpaperConfig(
-					preset = _wallpaperPreset.value,
-					seed = _wallpaperSeed.value,
-					isDark = !isLight,
-					isAmoled = _isAmoled.value,
-				)
-				val dm = context.resources.displayMetrics
-				val width = maxOf(dm.widthPixels, 1080)
-				val height = maxOf(dm.heightPixels, 2400)
-				val bitmap = PixelWallpaperGenerator.renderToBitmap(width, height, colors, config)
-				WallpaperStorage.compressToJpegBytes(bitmap, quality = 92)
-			} else null
-
 			val themeBytes = buildThemeBytes(
 				context = context,
 				isAmoled = _isAmoled.value,
@@ -241,7 +200,6 @@ class MainScreenViewModel(
 				inputFileName = inputFileName,
 				customSeedColor = customSeedColor,
 				customScheme = customScheme,
-				embeddedWallpaperBytes = embeddedWallpaperBytes,
 			)
 			saveThemeBytesToDownloads(context, outputFileName, themeBytes)
 		}

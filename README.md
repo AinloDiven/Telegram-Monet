@@ -16,8 +16,12 @@
 ## 🌟 核心特色 (Core Highlights)
 
 ### 1. 纯净为现代 Telegram 而生 (Modern Telegram Only)
-- **彻底去除历史包袱**：完全剔除已过时的 Telegram X 兼容层与冗余代码，专注适配官方 Telegram 最新版规范。
-- **M3 Expressive 高对比度调色**：彻底修复原生 Telegram 在 Android 15 / 17 系统深浅色切换、后台切回时可能发生的文字发白或隐形问题，聊天气泡与顶栏始终保持 >7:1 的专业护眼对比度。
+- **彻底去除历史包袱**：完全剔除已过时的 Telegram X 兼容层与冗余伪键（如 `chat_blur_*`、`actionBarDefaultSub` 等），严格遵循官方 Telegram 最新版主题架构。
+- **彻底修复 Android 15 / 17 输入框文字变透明 Bug**：
+  - 针对 Android 15 (Vanilla Ice Cream) 及 Android 17 系统 HWUI 硬件加速合成器机制进行底层适配。
+  - 原生 Telegram 底部输入框（`messageEditText`）在重绘时依赖 `saveLayerAlpha` 与 `DST_OUT` 模式；若主题为 `chat_messagePanelBackground` 配置了非标准透明通道，切到后台恢复时会导致 RenderNode 脏缓存使文字字形 Alpha 通道被归零。
+  - 全面遵循 Telegram 官方最新规范，将输入面板、顶栏等容器保持规范的基底色彩，交由 Telegram 原生 RenderNode 高斯模糊引擎动态处理，彻底根除切出后台切回时输入框文字隐形的恶性问题。
+- **规范文本选择高亮通道**：修正 `chat_textSelectBackground` 与 `chat_outTextSelectionHighlight` 的半透明度通道（`~35%` / `~50%`），杜绝不透明遮挡问题。
 
 ### 2. 半透明聊天气泡 (Translucent Chat Bubbles)
 - **透光微透质感**：收发消息气泡具备精调的 80% ~ 85% 半透明度，光线柔和穿透，与底层壁纸自然交融。
@@ -34,12 +38,13 @@
   - 🧊 **45° 膨胀菱形 (Diamond Squircle)**：官方极简悬浮几何方块。
   - 🏜️ **丝滑沙丘 (Silk Dunes)**：多色阶斜向流动沙丘层叠带。
 - **真多布局换构图 (Genuine Multi-Layout Engine)**：
-  - 点击「🎲 换个构图」不再是微调位置，而是直接在**官方标准位、水平镜像位、对角张力位、纵轴脊柱位**之间重组骨架，并伴随主副色阶轮转。
+  - 点击「🎲 换个构图」直接在**官方标准位、水平镜像位、对角张力位、纵轴脊柱位**之间重组骨架，并伴随主副色阶轮转。
 - **大面积呼吸留白**：中央区域整洁干净，避免密集杂乱的小散点，完美衬托聊天内容。
 
-### 4. 壁纸直接打包随主题生效 (WPS Binary Stream)
-- 开启「随主题自动打包」后，壁纸二进制流（JPEG）会通过 Telegram 官方 `WPS` 协议直接嵌入到 `.attheme` 文件内部。
-- 导入主题时，Telegram 会自动提取并直接设为聊天背景，无需任何外部链接或二次手动设壁纸。
+### 4. Pixel 几何壁纸一键生成与保存 (Pixel Wallpaper Generator)
+- 结合当前 Monet 提取的调色板实时生成 1200×2670 超高清矢量几何壁纸。
+- 支持一键保存至系统相册（`Pictures/TgMonet`），在 Telegram「设置 > 聊天设置 > 更换聊天背景」中选中即可应用。
+- 遵循 Telegram 最新规范：官方 `.attheme` 标准仅处理颜色与云端 Slug，不使用且不依赖已失效的旧版 WPS 字节流注入，确保主题格式纯净轻巧与稳定。
 
 ---
 
@@ -59,7 +64,7 @@
 ## 📥 下载与安装 (Download)
 
 请前往项目 [GitHub Releases](https://github.com/AinloDiven/Telegram-Monet/releases) 下载最新 APK：
-- 最新版本：`TGMonet-Radical-v14.4.0.apk`
+- 最新版本：`TGMonet-Radical-v14.5.0.apk`
 - 支持直接覆盖更新已安装的旧版 TGMonet Radical。
 
 ---

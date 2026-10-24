@@ -11,7 +11,7 @@ fun changeTextTelegram(
     monetList.putAll(customColors)
 
     // Frosted glass translucent color tokens
-    // 0xD9 = ~85% alpha, 0xCC = ~80% alpha, 0xB3 = ~70% alpha, 0x80 = 50% alpha
+    // 0xD9 = ~85% alpha, 0xCC = ~80% alpha, 0xB3 = ~70% alpha, 0x80 = 50% alpha, 0x5A = ~35% alpha, 0x7E = ~50% alpha
     fun withAlpha(baseKey: String, alphaHex: Int): Int {
         val base = monetList[baseKey] ?: 0
         return (base and 0x00FFFFFF) or (alphaHex shl 24)
@@ -47,6 +47,10 @@ fun changeTextTelegram(
     monetList["a1_100_glass_85"] = withAlpha("a1_100", 0xD9)
     monetList["a1_100_glass_80"] = withAlpha("a1_100", 0xCC)
 
+    // Standard semi-transparent text selection highlights conforming to Telegram architecture
+    monetList["chat_textSelectBackground_monet"] = withAlpha("a1_300", 0x5A)
+    monetList["chat_outTextSelectionHighlight_monet"] = withAlpha("a1_200", 0x7E)
+
     val a2_700_2 = withAlpha("a2_700", 0x80)
     val n2_100_2 = withAlpha("n2_100", 0x80)
 
@@ -59,10 +63,6 @@ fun changeTextTelegram(
     for (key in sortedKeys) {
         val value = monetList[key]!!
         themeText = themeText.replace(key, value.toString())
-    }
-
-    if (!themeText.contains("WLS=")) {
-        themeText += "\nWLS=tg://wallpaper?mode=blur\n"
     }
 
     return themeText

@@ -49,7 +49,6 @@ fun MainScreen(
 	val wallpaperPreset by viewModel.wallpaperPreset.collectAsState()
 	val wallpaperSeed by viewModel.wallpaperSeed.collectAsState()
 	val isDarkWallpaperPreview by viewModel.isDarkWallpaperPreview.collectAsState()
-	val isAttachWallpaperToTheme by viewModel.isAttachWallpaperToTheme.collectAsState()
 
 	val context = LocalContext.current
 	val currentColors = remember(selectedPaletteId, allPalettes) {
@@ -70,7 +69,6 @@ fun MainScreen(
 		wallpaperPreset = wallpaperPreset,
 		wallpaperSeed = wallpaperSeed,
 		isDarkWallpaperPreview = isDarkWallpaperPreview,
-		isAttachWallpaperToTheme = isAttachWallpaperToTheme,
 		setAmoled = { viewModel.setSettings(Constants.SHARED_IS_AMOLED, it) },
 		setFrostedBubbles = { viewModel.setSettings(Constants.SHARED_FROSTED_BUBBLES, it) },
 		setGradient = { viewModel.setSettings(Constants.SHARED_USE_GRADIENT, it) },
@@ -86,7 +84,6 @@ fun MainScreen(
 		onSelectWallpaperPreset = { viewModel.setWallpaperPreset(it) },
 		onShuffleWallpaper = { viewModel.shuffleWallpaperSeed() },
 		onToggleDarkWallpaperPreview = { viewModel.toggleDarkWallpaperPreview(it) },
-		onToggleAttachWallpaperToTheme = { viewModel.toggleAttachWallpaperToTheme(it) },
 		onSaveWallpaper = { viewModel.saveWallpaper(context) },
 		onOpenImagePalette = onOpenImagePalette,
 	)
@@ -107,7 +104,6 @@ private fun MainScreenComponent(
 	wallpaperPreset: WallpaperPreset,
 	wallpaperSeed: Long,
 	isDarkWallpaperPreview: Boolean,
-	isAttachWallpaperToTheme: Boolean,
 	setAmoled: (value: Boolean) -> Unit,
 	setFrostedBubbles: (value: Boolean) -> Unit,
 	setGradient: (value: Boolean) -> Unit,
@@ -123,7 +119,6 @@ private fun MainScreenComponent(
 	onSelectWallpaperPreset: (WallpaperPreset) -> Unit,
 	onShuffleWallpaper: () -> Unit,
 	onToggleDarkWallpaperPreview: (Boolean) -> Unit,
-	onToggleAttachWallpaperToTheme: (Boolean) -> Unit,
 	onSaveWallpaper: () -> Unit,
 	onOpenImagePalette: () -> Unit,
 ) {
@@ -177,11 +172,9 @@ private fun MainScreenComponent(
 					seed = wallpaperSeed,
 					isDarkPreview = isDarkWallpaperPreview,
 					isAmoled = isAmoled,
-					isAttachToTheme = isAttachWallpaperToTheme,
 					onSelectPreset = onSelectWallpaperPreset,
 					onShuffle = onShuffleWallpaper,
 					onToggleDarkPreview = onToggleDarkWallpaperPreview,
-					onToggleAttachToTheme = onToggleAttachWallpaperToTheme,
 					onSaveWallpaper = onSaveWallpaper,
 				)
 			}
@@ -240,7 +233,6 @@ private fun MainScreenPreview() {
 		wallpaperPreset = WallpaperPreset.PIXEL_CLASSIC,
 		wallpaperSeed = 42L,
 		isDarkWallpaperPreview = false,
-		isAttachWallpaperToTheme = false,
 		setAmoled = {},
 		setFrostedBubbles = {},
 		setGradient = {},
@@ -256,7 +248,6 @@ private fun MainScreenPreview() {
 		onSelectWallpaperPreset = {},
 		onShuffleWallpaper = {},
 		onToggleDarkWallpaperPreview = {},
-		onToggleAttachWallpaperToTheme = {},
 		onSaveWallpaper = {},
 		onOpenImagePalette = {},
 	)

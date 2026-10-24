@@ -7,7 +7,6 @@ import com.c3r5b8.telegram_monet.common.Constants
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
-import java.util.Locale
 
 fun createTheme(
     context: Context,
@@ -22,7 +21,6 @@ fun createTheme(
     outputFileName: String,
     customSeedColor: Int = 0,
     customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
-    embeddedWallpaperBytes: ByteArray? = null,
 ) {
     val generatedThemeText = buildThemeContent(
         context = context,
@@ -38,13 +36,7 @@ fun createTheme(
         customScheme = customScheme,
     )
 
-    val finalBytes = if (embeddedWallpaperBytes != null && embeddedWallpaperBytes.isNotEmpty()) {
-        appendWallpaperToTheme(generatedThemeText, embeddedWallpaperBytes)
-    } else {
-        generatedThemeText.toByteArray(Charsets.UTF_8)
-    }
-
-    File(context.filesDir, outputFileName).writeBytes(finalBytes)
+    File(context.filesDir, outputFileName).writeText(generatedThemeText, Charsets.UTF_8)
     shareTheme(context, outputFileName)
 }
 
@@ -60,7 +52,6 @@ fun buildThemeBytes(
     inputFileName: String,
     customSeedColor: Int = 0,
     customScheme: ColorScheme = ColorScheme.EXPRESSIVE,
-    embeddedWallpaperBytes: ByteArray? = null,
 ): ByteArray {
     val text = buildThemeContent(
         context = context,
@@ -75,28 +66,7 @@ fun buildThemeBytes(
         customSeedColor = customSeedColor,
         customScheme = customScheme,
     )
-    return if (embeddedWallpaperBytes != null && embeddedWallpaperBytes.isNotEmpty()) {
-        appendWallpaperToTheme(text, embeddedWallpaperBytes)
-    } else {
-        text.toByteArray(Charsets.UTF_8)
-    }
-}
-
-fun appendWallpaperToTheme(themeText: String, wallpaperBytes: ByteArray): ByteArray {
-    // 1. Remove WLS= line because Telegram prioritizes WLS over embedded wallpaper stream (WPS).
-    // If WLS is present, Telegram checks its disk cache for MD5(WLS).wp and ignores embedded binary data!
-    var base = themeText.trimEnd()
-    base = base.replace(Regex("(?m)^WLS=.*$\n?"), "").trimEnd()
-
-    // 2. Telegram's official parser (Theme.java:7584) checks: if (line.startsWith("WPS")) { ... }
-    // The exact byte offset immediately following "WPS\n" is where Telegram begins decoding the image stream.
-    val header = "\nWPS\n"
-    val textBytes = (base + header).toByteArray(Charsets.UTF_8)
-
-    val output = ByteArray(textBytes.size + wallpaperBytes.size)
-    System.arraycopy(textBytes, 0, output, 0, textBytes.size)
-    System.arraycopy(wallpaperBytes, 0, output, textBytes.size, wallpaperBytes.size)
-    return output
+    return text.toByteArray(Charsets.UTF_8)
 }
 
 fun buildThemeContent(

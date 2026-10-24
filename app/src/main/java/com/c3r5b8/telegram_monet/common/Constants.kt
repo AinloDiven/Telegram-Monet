@@ -27,5 +27,4 @@ object Constants {
 
     const val SHARED_WALLPAPER_PRESET = "wallpaperPreset"
     const val SHARED_WALLPAPER_SEED = "wallpaperSeed"
-    const val SHARED_WALLPAPER_ATTACH_TO_THEME = "wallpaperAttachToTheme"
 }

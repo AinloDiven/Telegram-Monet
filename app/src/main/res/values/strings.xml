@@ -78,7 +78,7 @@
 
     <!-- Pixel Wallpaper -->
     <string name="wallpaper_card_title">Pixel Geometry Wallpaper</string>
-    <string name="wallpaper_card_description">Generate Material 3 Expressive Pixel-styled geometric wallpapers that match your dynamic colors.</string>
+    <string name="wallpaper_card_description">Generate Material 3 Expressive Pixel-styled geometric wallpapers that match your dynamic colors. Save to gallery and set in Telegram Chat Settings.</string>
     <string name="settings_card_frosted_bubbles">Translucent Chat Bubbles</string>
     <string name="wallpaper_preset_m3_expressive">M3 Expressive</string>
     <string name="wallpaper_preset_pixel_minimal">Floating Geometry</string>
@@ -88,9 +88,8 @@
     <string name="wallpaper_preset_fluid_waves">Fluid Waves</string>
     <string name="wallpaper_preset_bauhaus">Bauhaus</string>
     <string name="wallpaper_shuffle">Shuffle</string>
-    <string name="wallpaper_save">Save PNG</string>
-    <string name="wallpaper_save_success">Wallpaper saved: %1$s</string>
+    <string name="wallpaper_save">Save Wallpaper to Gallery</string>
+    <string name="wallpaper_save_success">Wallpaper saved! Apply it in Telegram Settings > Chat Settings: %1$s</string>
     <string name="wallpaper_save_failed">Failed to save wallpaper</string>
-    <string name="wallpaper_attach_to_theme">Attach wallpaper to theme</string>
     <string name="wallpaper_preview_dark">Dark preview</string>
 </resources>

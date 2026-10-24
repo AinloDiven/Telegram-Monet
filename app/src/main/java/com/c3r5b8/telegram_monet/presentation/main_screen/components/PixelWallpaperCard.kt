@@ -54,11 +54,9 @@ fun PixelWallpaperCard(
     seed: Long,
     isDarkPreview: Boolean,
     isAmoled: Boolean,
-    isAttachToTheme: Boolean,
     onSelectPreset: (WallpaperPreset) -> Unit,
     onShuffle: () -> Unit,
     onToggleDarkPreview: (Boolean) -> Unit,
-    onToggleAttachToTheme: (Boolean) -> Unit,
     onSaveWallpaper: () -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
@@ -181,26 +179,7 @@ fun PixelWallpaperCard(
             }
         }
 
-        // Attach to theme switch
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp)
-                .clickable { onToggleAttachToTheme(!isAttachToTheme) },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = stringResource(R.string.wallpaper_attach_to_theme),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Switch(
-                checked = isAttachToTheme,
-                onCheckedChange = onToggleAttachToTheme,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Save Wallpaper button
         Surface(
